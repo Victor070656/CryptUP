@@ -11,7 +11,8 @@
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
+     <script src="assets/js/tailwindcss.js"></script>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 

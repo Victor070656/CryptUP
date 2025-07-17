@@ -9,8 +9,7 @@
     <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect" />
     <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"
         href="https://fonts.googleapis.com/css2?display=swap&family=Manrope:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900" />
-    <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-    <script src="assets/js/tailwindcss.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style type="text/tailwindcss">
         :root {
       --primary-color: #53d22c;

@@ -9,7 +9,11 @@
     <div class="flex items-center gap-3 mb-8 md:mb-10">
         <div
             class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent-color)] rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
-            <span class="text-black font-bold text-lg">₿</span>
+            <svg class="h-8 w-8 text-primary-color" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"
+                    fill="currentColor"></path>
+            </svg>
         </div>
         <h1 class="text-white text-base sm:text-lg font-black">CryptUP</h1>
     </div>
@@ -19,11 +23,11 @@
             <span class="text-lg">🏠</span>
             Home
         </a>
-        <!-- <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base"
-            href="#" >
+        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'transactions.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
+            href="transactions.php">
             <span class="text-lg">📊</span>
             Transactions
-        </a> -->
+        </a>
         <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'send.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
             href="send.php">
             <span class="text-lg">💰</span>
@@ -34,19 +38,13 @@
             <span class="text-lg">🔄</span>
             Receive
         </a>
-        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base"
-            href="#">
-            <span class="text-lg">⚡</span>
-            Earn
-        </a>
-    </nav>
-    <div class="mt-6">
-        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base"
-            href="#">
+
+        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'settings.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
+            href="settings.php">
             <span class="text-lg">⚙️</span>
             Settings
         </a>
-    </div>
+    </nav>
 </aside>
 
 <script>

