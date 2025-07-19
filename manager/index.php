@@ -1,10 +1,16 @@
+<?php
+include_once "../config/config.php";
+if (!isset($_SESSION["cryptup_admin"])) {
+    echo "<script>location.href = 'login.php'</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoWallet</title>
+    <title>CryptUP || Admin Dashboard</title>
     <link rel="icon" href="data:image/x-icon;base64," type="image/x-icon" />
     <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect" />
     <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"
@@ -60,18 +66,17 @@
 
                 <!-- start -->
                 <div class="mb-6 sm:mb-8">
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">My Portfolio</h1>
-                    <p class="text-[var(--text-secondary)] text-sm sm:text-base">Welcome back to your crypto dashboard.
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Dashboard</h1>
+                    <p class="text-[var(--text-secondary)] text-sm sm:text-base">Welcome back to the admin dashboard.
                     </p>
                 </div>
 
                 <!-- Portfolio Cards -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
                     <div class="card lg:col-span-2">
-                        <h2 class="text-lg sm:text-xl font-semibold mb-2 text-[var(--text-secondary)]">Total Balance
+                        <h2 class="text-lg sm:text-xl font-semibold mb-2 text-[var(--text-secondary)]">Total Users
                         </h2>
-                        <p class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">$1,234.56</p>
-                        <p class="text-sm sm:text-base text-green-500 font-medium">+$123.45 (+11.26%) today</p>
+                        <p class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">0</p>
                     </div>
                     <div class="card">
                         <div class="flex flex-col gap-3 sm:gap-4 h-full justify-center">
@@ -83,107 +88,16 @@
                     </div>
                 </div>
 
-                <!-- Quick Stats -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                    <div class="card text-center">
-                        <p class="text-[var(--text-secondary)] text-xs sm:text-sm mb-1">24h Change</p>
-                        <p class="text-green-500 font-bold text-sm sm:text-base">+2.5%</p>
-                    </div>
-                    <div class="card text-center">
-                        <p class="text-[var(--text-secondary)] text-xs sm:text-sm mb-1">Assets</p>
-                        <p class="text-white font-bold text-sm sm:text-base">5</p>
-                    </div>
-                    <div class="card text-center">
-                        <p class="text-[var(--text-secondary)] text-xs sm:text-sm mb-1">Profit/Loss</p>
-                        <p class="text-green-500 font-bold text-sm sm:text-base">+$456.78</p>
-                    </div>
-                    <div class="card text-center">
-                        <p class="text-[var(--text-secondary)] text-xs sm:text-sm mb-1">Rank</p>
-                        <p class="text-white font-bold text-sm sm:text-base">#1,234</p>
-                    </div>
-                </div>
+
 
                 <!-- Assets Table -->
                 <div class="card">
                     <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Your Assets</h2>
 
-                    <!-- Mobile Cards View -->
-                    <div class="block md:hidden space-y-4">
-                        <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
-                            onclick="viewAssetDetails('BTC')">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-yellow-500 flex items-center justify-center">
-                                        <span class="text-white font-bold">₿</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-white">Bitcoin</p>
-                                        <p class="text-sm text-[var(--text-secondary)]">BTC</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-white">$3,086.25</p>
-                                    <p class="text-sm text-green-500">+2.5%</p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-[var(--text-secondary)]">Balance: 0.12345 BTC</span>
-                                <span class="text-[var(--text-secondary)]">$25,000.00</span>
-                            </div>
-                        </div>
 
-                        <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
-                            onclick="viewAssetDetails('ETH')">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center">
-                                        <span class="text-white font-bold">E</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-white">Ethereum</p>
-                                        <p class="text-sm text-[var(--text-secondary)]">ETH</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-white">$987.65</p>
-                                    <p class="text-sm text-red-500">-1.2%</p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-[var(--text-secondary)]">Balance: 0.54321 ETH</span>
-                                <span class="text-[var(--text-secondary)]">$1,800.00</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
-                            onclick="viewAssetDetails('ADA')">
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="flex items-center gap-3">
-                                    <div
-                                        class="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center">
-                                        <span class="text-white font-bold">A</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-semibold text-white">Cardano</p>
-                                        <p class="text-sm text-[var(--text-secondary)]">ADA</p>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <p class="font-semibold text-white">$123.45</p>
-                                    <p class="text-sm text-green-500">+5.7%</p>
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-[var(--text-secondary)]">Balance: 250.00 ADA</span>
-                                <span class="text-[var(--text-secondary)]">$0.49</span>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Desktop Table View -->
-                    <div class="hidden md:block overflow-x-auto">
+                    <div class="block overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead>
                                 <tr class="border-b border-[var(--border-color)]">

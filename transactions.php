@@ -1,10 +1,16 @@
+<?php
+include_once "config/config.php";
+if (!isset($_SESSION["cryptup_user"])) {
+    echo "<script>location.href = 'login.php'</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoWallet</title>
+    <title>CryptUP || Transactions</title>
     <link rel="icon" href="data:image/x-icon;base64," type="image/x-icon" />
     <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect" />
     <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"

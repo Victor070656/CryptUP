@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-     <script src="assets/js/tailwindcss.js"></script>
+    <script src="assets/js/tailwindcss.js"></script>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
@@ -42,7 +42,8 @@
 
                 <div class="animate-fade-in-up opacity-0 stagger-3">
                     <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
-                        <button class="btn-primary text-lg px-8 py-4 flex items-center space-x-2">
+                        <button onclick="location.href='login.php'"
+                            class="btn-primary text-lg px-8 py-4 flex items-center space-x-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
@@ -50,14 +51,7 @@
                             </svg>
                             <span>Secure Your Crypto</span>
                         </button>
-                        <button class="btn-secondary text-lg px-8 py-4 flex items-center space-x-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v4a2 2 0 002 2h2a2 2 0 002-2v-4">
-                                </path>
-                            </svg>
-                            <span>Recovery Demo</span>
-                        </button>
+
                     </div>
                 </div>
 

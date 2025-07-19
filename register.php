@@ -1,16 +1,19 @@
+<?php
+include_once "config/config.php";
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Stitch Design</title>
+    <title>CryptUP || Register</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-     <script src="assets/js/tailwindcss.js"></script>
+    <script src="assets/js/tailwindcss.js"></script>
     <style type="text/tailwindcss">
         :root {
             --primary-color: #53d22c;
@@ -75,20 +78,40 @@
                         <h2 class="typography_h1 mb-2 font-black">Create Account</h2>
                         <p class="typography_body">Securely log in to your wallet.</p>
                     </div>
-                    <form class="space-y-6">
+                    <form method="post" class="space-y-6">
                         <div>
                             <label class="sr-only" for="name">Name</label>
-                            <input class="input" id="name" placeholder="Name" required="" type="text" />
+                            <input class="input" name="name" id="name" autofocus placeholder="Name" required="" type="text" />
                         </div>
                         <div>
                             <label class="sr-only" for="email">Email</label>
-                            <input class="input" id="email" placeholder="Email" required="" type="email" />
+                            <input class="input" id="email" name="email" placeholder="Email" required="" type="email" />
                         </div>
                         <div>
                             <label class="sr-only" for="password">Password</label>
-                            <input class="input" id="password" placeholder="Password" required="" type="password" />
+                            <input class="input" id="password" name="password" placeholder="Password" required=""
+                                type="password" />
                         </div>
-                        <button class="button_primary w-full" type="submit">Register</button>
+                        <button class="button_primary w-full" type="submit" name="register">Register</button>
+                        <?php
+                        if (isset($_POST["register"])) {
+                            $name = htmlspecialchars($_POST["name"]);
+                            $email = htmlspecialchars($_POST["email"]);
+                            $password = htmlspecialchars($_POST["password"]);
+
+                            $checkEmail = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email'");
+                            if (mysqli_num_rows($checkEmail) > 0) {
+                                echo "<script>alert('User already exists'); location.href = 'register.php'</script>";
+                            }
+
+                            $insert = mysqli_query($conn, "INSERT INTO `users` (`name`, `email`, `password`) VALUES ('$name', '$email', '$password')");
+                            if ($insert) {
+                                echo "<script>alert('Registered Successfully'); location.href = 'login.php'</script>";
+                            } else {
+                                echo "<script>alert('Registration failed! try again'); location.href = 'register.php'</script>";
+                            }
+                        }
+                        ?>
                     </form>
                     <div class="text-center mt-4">
                         <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"

@@ -1,16 +1,22 @@
+<?php
+include_once "config/config.php";
+if (isset($_SESSION["cryptup_user"])) {
+    echo "<script>location.href = 'dashboard.php'</script>";
+}
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Stitch Design</title>
+    <title>CryptUP || Login</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-     <script src="assets/js/tailwindcss.js"></script>
+    <script src="assets/js/tailwindcss.js"></script>
     <style type="text/tailwindcss">
         :root {
             --primary-color: #53d22c;
@@ -75,16 +81,33 @@
                         <h2 class="typography_h1 mb-2 font-black">Welcome Back</h2>
                         <p class="typography_body">Securely log in to your wallet.</p>
                     </div>
-                    <form class="space-y-6">
+                    <form method="post" class="space-y-6">
                         <div>
                             <label class="sr-only" for="email">Email</label>
-                            <input class="input" id="email" placeholder="Email" required="" type="email" />
+                            <input class="input" id="email" name="email" autofocus placeholder="Email" required=""
+                                type="email" />
                         </div>
                         <div>
                             <label class="sr-only" for="password">Password</label>
-                            <input class="input" id="password" placeholder="Password" required="" type="password" />
+                            <input class="input" id="password" name="password" placeholder="Password" required=""
+                                type="password" />
                         </div>
-                        <button class="button_primary w-full" type="submit">Log In</button>
+                        <button class="button_primary w-full" name="login" type="submit">Log In</button>
+                        <?php
+                        if (isset($_POST["login"])) {
+                            $email = htmlspecialchars($_POST["email"]);
+                            $password = htmlspecialchars($_POST["password"]);
+
+                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email' AND `password` = '$password'");
+                            if (mysqli_num_rows($checkUser) > 0) {
+                                $user = mysqli_fetch_assoc($checkUser);
+                                $_SESSION["cryptup_user"] = $user["id"];
+                                echo "<script>alert('Login Successful! ✔️'); location.href = 'dashboard.php'</script>";
+                            } else {
+                                echo "<script>alert('Login Failed! wrong credentials 🚫'); location.href = 'login.php'</script>";
+                            }
+                        }
+                        ?>
                     </form>
                     <div class="text-center mt-4">
                         <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"

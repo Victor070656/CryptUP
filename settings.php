@@ -1,10 +1,16 @@
+<?php
+include_once "config/config.php";
+if (!isset($_SESSION["cryptup_user"])) {
+    echo "<script>location.href = 'login.php'</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CryptoWallet</title>
+    <title>CryptUP || Settings</title>
     <link rel="icon" href="data:image/x-icon;base64," type="image/x-icon" />
     <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect" />
     <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"
@@ -91,11 +97,7 @@
                             <div class="relative">
                                 <input class="input pr-12" id="recipient-address" placeholder="Enter address"
                                     type="text" />
-                                <button
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 button_secondary p-1.5 rounded-md"
-                                    type="button">
-                                    <span class="material-icons text-lg">qr_code_scanner</span>
-                                </button>
+
                             </div>
                         </div>
                         <div>

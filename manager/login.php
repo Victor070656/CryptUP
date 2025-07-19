@@ -1,10 +1,13 @@
+<?php
+include_once "../config/config.php";
+?>
 <!DOCTYPE html>
 <html class="dark" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Stitch Design</title>
+    <title>CryptUP || Admin Login</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
@@ -56,7 +59,7 @@
 
 <body class="bg-background-color text-text-primary">
     <div class="flex flex-col min-h-screen">
-        <?php include "components/nav.php"; ?>
+        <?php include "../components/nav.php"; ?>
 
         <main class="main_container flex-grow flex items-center justify-center">
             <div class="grid md:grid-cols-2 gap-16 items-center w-full max-w-6xl">
@@ -71,24 +74,36 @@
                 </div>
                 <div class="card w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
-                        <h2 class="typography_h1 mb-2 font-black">Welcome Back</h2>
-                        <p class="typography_body">Securely log in to your wallet.</p>
+                        <h2 class="typography_h1 mb-2 font-black">Welcome Admin</h2>
+                        <p class="typography_body">Securely log in to your panel.</p>
                     </div>
-                    <form class="space-y-6">
+                    <form method="post" class="space-y-6">
                         <div>
                             <label class="sr-only" for="email">Email</label>
-                            <input class="input" id="email" placeholder="Email" required="" type="email" />
+                            <input class="input" name="email" id="email" placeholder="Email" required="" type="email" />
                         </div>
                         <div>
                             <label class="sr-only" for="password">Password</label>
-                            <input class="input" id="password" placeholder="Password" required="" type="password" />
+                            <input class="input" name="password" id="password" placeholder="Password" required=""
+                                type="password" />
                         </div>
-                        <button class="button_primary w-full" type="submit">Log In</button>
+                        <button class="button_primary w-full" name="login" type="submit">Log In</button>
+                        <?php
+                        if (isset($_POST["login"])) {
+                            $email = htmlspecialchars(trim($_POST["email"]));
+                            $password = htmlspecialchars(trim($_POST["password"]));
+
+                            $checkAdmin = mysqli_query($conn, "SELECT * FROM `admin` WHERE `email` = '$email' AND `password` = '$password'");
+                            if (mysqli_num_rows($checkAdmin) > 0) {
+                                $_SESSION["cryptup_admin"] = "admin";
+                                echo "<script>location.href = './'; alert('Logged in ✔️')</script>";
+                            } else {
+                                echo "<script>alert('Wrong credentials 🚫')</script>";
+                            }
+
+                        }
+                        ?>
                     </form>
-                    <div class="text-center mt-4">
-                        <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
-                            href="register.php">Register</a>
-                    </div>
 
                 </div>
             </div>

