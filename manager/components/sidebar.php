@@ -23,20 +23,10 @@
             <span class="text-lg">🏠</span>
             Home
         </a>
-        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'transactions.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
-            href="transactions.php">
-            <span class="text-lg">📊</span>
-            Transactions
-        </a>
-        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'send.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
-            href="send.php">
-            <span class="text-lg">💰</span>
-            Send
-        </a>
-        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'receive.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
-            href="receive.php">
-            <span class="text-lg">🔄</span>
-            Receive
+        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'users.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
+            href="users.php">
+            <span class="text-lg">👤</span>
+            Users
         </a>
 
         <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'settings.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"

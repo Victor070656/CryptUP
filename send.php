@@ -88,13 +88,20 @@ if (mysqli_num_rows($getCoins) > 0) {
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
                                 for="coin-select">Select Coin</label>
                             <div class="relative">
-                                <select class="input appearance-none" id="coin-select">
-                                    <option>Bitcoin (BTC)</option>
-                                    <option>Ethereum (ETH)</option>
-                                    <option>Litecoin (LTC)</option>
+                                <select class="input appearance-none" name="coin" id="coin-select">
+                                    <?php
+                                    $getUserCoins = mysqli_query($conn, "SELECT * FROM `users_coins` WHERE `user_id` = '$user_id'");
+                                    if (mysqli_num_rows($getUserCoins) > 0):
+                                        while ($userCoin = mysqli_fetch_assoc($getUserCoins)):
+                                            ?>
+                                            <option value="<?= $userCoin["aka"] ?>"><?= strtoupper($userCoin["coin"]) ?>
+                                                (<?= strtoupper($userCoin["aka"]) ?>)</option>
+                                            <?php
+                                        endwhile;
+                                    endif;
+                                    ?>
                                 </select>
-                                <span
-                                    class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] pointer-events-none">expand_more</span>
+
                             </div>
                         </div>
                         <div>
@@ -103,36 +110,20 @@ if (mysqli_num_rows($getCoins) > 0) {
                             <div class="relative">
                                 <input class="input pr-12" id="recipient-address" placeholder="Enter address"
                                     type="text" />
-                                <button
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 button_secondary p-1.5 rounded-md"
-                                    type="button">
-                                    <span class="material-icons text-lg">qr_code_scanner</span>
-                                </button>
+
                             </div>
                         </div>
                         <div>
                             <div class="flex justify-between items-baseline">
                                 <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
                                     for="amount">Amount</label>
-                                <span class="text-xs text-[var(--text-secondary)]">Available: 0.12345 BTC</span>
                             </div>
                             <div class="relative">
-                                <input class="input" id="amount" placeholder="0.00" type="number" />
-                                <span
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] font-semibold">BTC</span>
+                                <input class="input" id="amount" step="" placeholder="0.00" type="number" />
+
                             </div>
                         </div>
-                        <!-- <div
-                            class="text-sm text-[var(--text-secondary)] border-t border-[var(--border-color)] pt-4 space-y-2">
-                            <div class="flex justify-between">
-                                <span>Network Fee:</span>
-                                <span class="text-white font-medium">~ 0.00012 BTC</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Total:</span>
-                                <span class="text-white font-medium">0.00000 BTC</span>
-                            </div>
-                        </div> -->
+
                         <div>
                             <button class="button_primary" type="submit">
                                 Review Transaction

@@ -153,20 +153,26 @@ if (mysqli_num_rows($getCoins) > 0) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors cursor-pointer"
-                                        onclick="viewAssetDetails('BTC')">
-                                        <td class="p-3">
-                                            <div class="flex items-center gap-4">
-                                                <div>
-                                                    <p class="font-semibold text-white">Bitcoin</p>
-                                                    <p class="text-sm text-[var(--text-secondary)]">BTC</p>
+                                    <?php foreach ($coins as $coin): ?>
+                                        <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors">
+                                            <td class="p-3">
+                                                <div class="flex items-center gap-4">
+                                                    <div>
+                                                        <p class="font-semibold text-white"><?= strtoupper($coin["coin"]) ?></p>
+                                                        <p class="text-sm text-[var(--text-secondary)]">
+                                                            <?= strtoupper($coin["aka"]) ?>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="p-3 font-medium text-white">0.12345</td>
-                                        <td class="p-3 font-medium text-white">$25,000.00</td>
-                                        <td class="p-3 text-right font-semibold text-white">$3,086.25</td>
-                                    </tr>
+                                            </td>
+                                            <td class="p-3 font-medium text-white">
+                                                <?= number_format($coin["coin_balance"], 6) ?>
+                                            </td>
+                                            <td class="p-3 font-medium text-white">$<?= number_format($coin["price"]) ?></td>
+                                            <td class="p-3 text-right font-semibold text-white">
+                                                $<?= number_format($coin["balance"]) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         <?php else: ?>

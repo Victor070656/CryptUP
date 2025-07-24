@@ -4,8 +4,7 @@ if (!isset($_SESSION["cryptup_admin"])) {
     echo "<script>location.href = 'login.php'</script>";
 }
 
-$getLatestUsers = mysqli_query($conn, "SELECT * FROM `users`  ORDER BY `id` DESC LIMIT 5");
-$getUsers = mysqli_query($conn, "SELECT * FROM `users` ");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,37 +68,13 @@ $getUsers = mysqli_query($conn, "SELECT * FROM `users` ");
 
                 <!-- start -->
                 <div class="mb-6 sm:mb-8">
-                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Dashboard</h1>
-                    <p class="text-[var(--text-secondary)] text-sm sm:text-base">Welcome back to the admin dashboard.
-                    </p>
+                    <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Users</h1>
                 </div>
-
-                <!-- Portfolio Cards -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-                    <div class="card lg:col-span-2">
-                        <h2 class="text-lg sm:text-xl font-semibold mb-2 text-[var(--text-secondary)]">Total Users
-                        </h2>
-                        <p class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">
-                            <?= number_format($getUsers->num_rows) ?>
-                        </p>
-                    </div>
-                    <div class="card">
-                        <div class="flex flex-col gap-3 sm:gap-4 h-full justify-center">
-                            <button class="button_primary w-full text-sm sm:text-base"
-                                onclick="location.href = 'users.php'">All Users</button>
-                            <!-- <button class="button_secondary w-full text-sm sm:text-base"
-                                onclick="handleReceive()">Receive</button> -->
-                        </div>
-                    </div>
-                </div>
-
 
 
                 <!-- Assets Table -->
                 <div class="card">
-                    <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Recent Users</h2>
-
-
+                    <!-- <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Users</h2> -->
 
                     <!-- Desktop Table View -->
                     <div class="block overflow-x-auto">
@@ -109,22 +84,25 @@ $getUsers = mysqli_query($conn, "SELECT * FROM `users` ");
                                     <th class="p-3 text-[var(--text-secondary)] font-semibold">Name</th>
                                     <th class="p-3 text-[var(--text-secondary)] font-semibold">Email</th>
                                     <th class="p-3 text-right text-[var(--text-secondary)] font-semibold">Reg. Date</th>
+                                    <th class="p-3 text-right text-[var(--text-secondary)] font-semibold">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $getUsers = mysqli_query($conn, "SELECT * FROM `users` ORDER BY `id` DESC LIMIT 5");
+                                $getUsers = mysqli_query($conn, "SELECT * FROM `users` ORDER BY `id` DESC");
                                 if (mysqli_num_rows($getUsers) > 0) {
                                     while ($user = mysqli_fetch_assoc($getUsers)) {
                                         $regDate = date("d/m/Y", strtotime($user['created_at']));
                                         ?>
-                                        <tr
-                                            class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors cursor-pointer">
+                                        <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors">
                                             <td class="p-3">
                                                 <p class="font-semibold text-white"><?= $user["name"]; ?></p>
                                             </td>
                                             <td class="p-3 font-medium text-white"><?= $user["email"]; ?></td>
                                             <td class="p-3 text-right font-semibold text-white"><?= $regDate; ?></td>
+                                            <td class="p-3 text-right font-semibold text-white">
+                                                <a href="view-user.php?id=<?= $user['id']; ?>">👁️</a>
+                                            </td>
                                         </tr>
                                         <?php
                                     }

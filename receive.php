@@ -110,134 +110,28 @@ if (mysqli_num_rows($getCoins) > 0) {
                     </div>
                     <div class="card space-y-2">
                         <div class="max-h-[60vh] overflow-y-auto pr-2" id="coin-list">
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold text-xl">
-                                    B</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Bitcoin</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">BTC</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-gray-400 flex items-center justify-center text-white font-bold text-xl">
-                                    E</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Ethereum</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">ETH</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-teal-500 flex items-center justify-center text-white font-bold text-xl">
-                                    T</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Tether</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">USDT</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-yellow-400 flex items-center justify-center text-black font-bold text-xl">
-                                    B</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">BNB</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">BNB</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xl">
-                                    U</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">USD Coin</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">USDC</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold text-xl">
-                                    S</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Solana</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">SOL</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-blue-300 flex items-center justify-center text-black font-bold text-xl">
-                                    C</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Cardano</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">ADA</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                                href="#">
-                                <div
-                                    class="shrink-0 size-10 rounded-full bg-yellow-600 flex items-center justify-center text-white font-bold text-xl">
-                                    D</div>
-                                <div class="flex-1">
-                                    <p class="font-semibold text-[var(--text-primary)]">Dogecoin</p>
-                                    <p class="text-sm text-[var(--text-secondary)]">DOGE</p>
-                                </div>
-                                <svg class="text-[var(--text-secondary)]" fill="currentColor" height="20"
-                                    viewBox="0 0 256 256" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M181.66,133.66l-48,48a8,8,0,0,1-11.32-11.32L212.69,80H160a8,8,0,0,1,0-16h64a8,8,0,0,1,8,8v64a8,8,0,0,1-16,0V83.31L134.34,168a8,8,0,0,1-11.32-11.32l48-48A8,8,0,0,1,181.66,133.66Z">
-                                    </path>
-                                </svg>
-                            </a>
+                            <?php
+                            $getUserCoins = mysqli_query($conn, "SELECT * FROM `users_coins` WHERE `user_id` = '$user_id'");
+                            if (mysqli_num_rows($getUserCoins) > 0):
+                                while ($userCoin = mysqli_fetch_assoc($getUserCoins)):
+                                    ?>
+                                    <a class="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
+                                        href="#">
+                                        <div class="flex-1">
+                                            <p class="font-semibold text-[var(--text-primary)]">
+                                                <?= strtoupper($userCoin["coin"]) ?></p>
+                                            <p class="text-sm text-[var(--text-secondary)]"><?= strtoupper($userCoin["aka"]) ?>
+                                            </p>
+                                        </div>
+                                        <span class="">
+                                            📋
+                                        </span>
+                                    </a>
+                                    <?php
+                                endwhile;
+                            endif;
+                            ?>
+
                         </div>
                     </div>
                 </div>
