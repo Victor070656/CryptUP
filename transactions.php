@@ -16,7 +16,7 @@ if (!isset($_SESSION["cryptup_user"])) {
     <link as="style" rel="stylesheet" onload="this.rel='stylesheet'"
         href="https://fonts.googleapis.com/css2?display=swap&family=Manrope:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900" />
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
-     <script src="assets/js/tailwindcss.js"></script>
+    <script src="assets/js/tailwindcss.js"></script>
     <style type="text/tailwindcss">
         :root {
       --primary-color: #53d22c;
@@ -95,85 +95,43 @@ if (!isset($_SESSION["cryptup_user"])) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr
-                                        class="border-b border-[var(--border-color)] hover:bg-[var(--background-color)]">
-                                        <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
-                                            Received ETH
-                                            <div class="text-xs text-[var(--text-secondary)]">From: 0x...cdef</div>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--green-accent)] font-medium">
-                                            +1.2345 ETH</td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--green-accent-light)] text-[var(--green-accent)]">Completed</span>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">Aug 15,
-                                            2023, 10:30 AM</td>
+                                    <?php
+                                    $getTransactions = mysqli_query($conn, "SELECT * FROM `transactions` WHERE `user_id` = '$user_id' ORDER BY `id` DESC");
+                                    if (mysqli_num_rows($getTransactions) > 0):
+                                        while ($transaction = mysqli_fetch_assoc($getTransactions)):
+                                            ?>
+                                            <tr
+                                                class="border-b border-[var(--border-color)] hover:bg-[var(--background-color)]">
+                                                <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
+                                                    Sent <?= strtoupper($transaction["coin"]) ?>
+                                                    <!-- <div class="text-xs text-[var(--text-secondary)]">To: 0x...4321</div> -->
+                                                </td>
+                                                <td class="h-[72px] px-4 py-2 text-sm text-[var(--red-accent)] font-medium">
+                                                    -<?= $transaction["coin_amount"] ?>         <?= strtoupper($transaction["coin"]) ?>
+                                                </td>
+                                                <td class="h-[72px] px-4 py-2">
+                                                    <span
+                                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--yellow-accent-light)] text-[var(--yellow-accent)]"><?= strtolower($transaction["status"]) ?></span>
+                                                </td>
+                                                <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">
+                                                    <?= date("d M, Y, h:i", strtotime($transaction["created_at"])) ?>
+                                                </td>
 
-                                    </tr>
-                                    <tr
-                                        class="border-b border-[var(--border-color)] hover:bg-[var(--background-color)]">
-                                        <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
-                                            Sent ETH
-                                            <div class="text-xs text-[var(--text-secondary)]">To: 0x...4321</div>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--red-accent)] font-medium">
-                                            -0.5678 ETH</td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--yellow-accent-light)] text-[var(--yellow-accent)]">Pending</span>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">Aug 14,
-                                            2023, 02:45 PM</td>
+                                            </tr>
+                                            <?php
+                                        endwhile;
+                                    else:
+                                        ?>
+                                        <tr
+                                            class='border-b border-[var(--border-color)] hover:bg-[var(--background-color)]'>
+                                            <td colspan='4'
+                                                class='h-[72px] px-4 py-2 text-sm text-center text-[var(--text-secondary)]'>
+                                                No transactions found.</td>
+                                        </tr>
+                                        <?php
+                                    endif;
+                                    ?>
 
-                                    </tr>
-                                    <tr
-                                        class="border-b border-[var(--border-color)] hover:bg-[var(--background-color)]">
-                                        <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
-                                            Received ETH
-                                            <div class="text-xs text-[var(--text-secondary)]">From: 0x...bcde</div>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--green-accent)] font-medium">
-                                            +0.9012 ETH</td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--green-accent-light)] text-[var(--green-accent)]">Completed</span>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">Aug 13,
-                                            2023, 09:15 AM</td>
-
-                                    </tr>
-                                    <tr
-                                        class="border-b border-[var(--border-color)] hover:bg-[var(--background-color)]">
-                                        <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
-                                            Sent ETH
-                                            <div class="text-xs text-[var(--text-secondary)]">To: 0x...7890</div>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--red-accent)] font-medium">
-                                            -0.3456 ETH</td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--red-accent-light)] text-[var(--red-accent)]">Failed</span>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">Aug 12,
-                                            2023, 04:00 PM</td>
-
-                                    </tr>
-                                    <tr class="hover:bg-[var(--background-color)]">
-                                        <td class="h-[72px] px-4 py-2 text-sm font-medium text-[var(--text-primary)]">
-                                            Received ETH
-                                            <div class="text-xs text-[var(--text-secondary)]">From: 0x...cdef</div>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--green-accent)] font-medium">
-                                            +0.7890 ETH</td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <span
-                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--green-accent-light)] text-[var(--green-accent)]">Completed</span>
-                                        </td>
-                                        <td class="h-[72px] px-4 py-2 text-sm text-[var(--text-secondary)]">Aug 11,
-                                            2023, 11:20 AM</td>
-
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>

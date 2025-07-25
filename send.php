@@ -83,7 +83,7 @@ if (mysqli_num_rows($getCoins) > 0) {
                         <h2 class="text-3xl font-bold text-white">Send Crypto</h2>
                         <p class="text-[var(--text-secondary)] mt-2">Securely send cryptocurrency to any address.</p>
                     </div>
-                    <form class="space-y-6">
+                    <form method="post" class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
                                 for="coin-select">Select Coin</label>
@@ -108,8 +108,8 @@ if (mysqli_num_rows($getCoins) > 0) {
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
                                 for="recipient-address">Recipient Address</label>
                             <div class="relative">
-                                <input class="input pr-12" id="recipient-address" placeholder="Enter address"
-                                    type="text" />
+                                <input class="input pr-12" name="address" id="recipient-address"
+                                    placeholder="Enter address" type="text" />
 
                             </div>
                         </div>
@@ -119,16 +119,47 @@ if (mysqli_num_rows($getCoins) > 0) {
                                     for="amount">Amount</label>
                             </div>
                             <div class="relative">
-                                <input class="input" id="amount" step="" placeholder="0.00" type="number" />
+                                <input class="input" name="amount" id="amount" step="0.00000001" placeholder="0.00"
+                                    type="number" />
 
                             </div>
                         </div>
 
                         <div>
-                            <button class="button_primary" type="submit">
-                                Review Transaction
+                            <button class="button_primary" name="send" type="submit">
+                                Send
                             </button>
                         </div>
+                        <?php
+                        if (isset($_POST["send"])) {
+                            $coin = mysqli_real_escape_string($conn, $_POST["coin"]);
+                            $address = mysqli_real_escape_string($conn, $_POST["address"]);
+                            $amount = mysqli_real_escape_string($conn, $_POST["amount"]);
+
+                            if (empty($coin) || empty($address) || empty($amount)) {
+                                echo "<script>alert('Please fill all fields');</script>";
+                            } else {
+                                $checkCoin = mysqli_query($conn, "SELECT * FROM `users_coins` WHERE `user_id` = '$user_id' AND `aka` = '$coin'");
+                                if (mysqli_num_rows($checkCoin) == 0) {
+                                    echo "<script>alert('Coin not found in your wallet');</script>";
+                                    exit;
+                                } else {
+                                    $userCoin = mysqli_fetch_assoc($checkCoin);
+                                    if ($amount > $userCoin["coin_balance"]) {
+                                        echo "<script>alert('Insufficient balance');</script>";
+                                        exit;
+                                    }
+                                    // Proceed with sending the transaction
+                                    $sendQuery = mysqli_query($conn, "INSERT INTO `transactions` (`user_id`, `coin`, `address_to`, `coin_amount`) VALUES ('$user_id', '$coin', '$address', '$amount')");
+                                    if (!$sendQuery) {
+                                        echo "<script>alert('Transaction failed!');</script>";
+                                    } else {
+                                        echo "<script>alert('Transaction successful!');</script>";
+                                    }
+                                }
+                            }
+                        }
+                        ?>
                     </form>
                 </div>
             </main>

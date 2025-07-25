@@ -119,14 +119,17 @@ if (mysqli_num_rows($getCoins) > 0) {
                                         href="#">
                                         <div class="flex-1">
                                             <p class="font-semibold text-[var(--text-primary)]">
-                                                <?= strtoupper($userCoin["coin"]) ?></p>
+                                                <?= strtoupper($userCoin["coin"]) ?>
+                                            </p>
                                             <p class="text-sm text-[var(--text-secondary)]"><?= strtoupper($userCoin["aka"]) ?>
                                             </p>
                                         </div>
-                                        <span class="">
+                                        <span class="copy-address cursor-pointer"
+                                            data-address="<?= htmlspecialchars($userCoin["address"]) ?>" title="Copy address">
                                             📋
                                         </span>
                                     </a>
+
                                     <?php
                                 endwhile;
                             endif;
@@ -138,6 +141,28 @@ if (mysqli_num_rows($getCoins) > 0) {
             </main>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".copy-address").forEach(function (el) {
+                el.addEventListener("click", function (e) {
+                    const address = this.getAttribute("data-address");
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(address)
+                            .then(() => {
+                                this.textContent = "✅"; // Change icon briefly
+                                this.title = "Address copied!";
+                                alert("Address copied to clipboard!");
+                                setTimeout(() => this.textContent = "📋", 1000);
+                            })
+                            .catch(err => alert("Copy failed"));
+                    } else {
+                        alert("Clipboard not supported");
+                    }
+                });
+            });
+        });
+    </script>
 
 
 </body>

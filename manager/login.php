@@ -65,7 +65,7 @@ include_once "../config/config.php";
             <div class="grid md:grid-cols-2 gap-16 items-center w-full max-w-6xl">
                 <div class="hidden md:flex flex-col items-center justify-center space-y-8">
                     <img alt="Wallet Safety Illustration" class="w-full max-w-md rounded-lg"
-                        style="aspect-ratio: 4/3; object-fit: cover;" src="assets/image/wallet.png" />
+                        style="aspect-ratio: 4/3; object-fit: cover;" src="../assets/image/wallet.png" />
                     <div class="text-center">
                         <h2 class="typography_h2 mb-2">Your Security is Our Priority</h2>
                         <p class="typography_body">We use state-of-the-art encryption and security protocols to protect
