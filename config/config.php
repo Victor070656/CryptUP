@@ -2,6 +2,7 @@
 session_start();
 
 $conn = mysqli_connect("localhost", "root", "", "cryptup");
+// $conn = mysqli_connect("sql110.infinityfree.com", "if0_37169829", "VbXlI7kZOA1ox", "if0_37169829_cryptup");
 
 if (mysqli_connect_errno()) {
     echo "Error connecting to database" . mysqli_connect_error();

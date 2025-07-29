@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 25, 2025 at 10:50 AM
+-- Generation Time: Jul 29, 2025 at 11:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -75,7 +75,7 @@ CREATE TABLE `users` (
   `name` varchar(255) NOT NULL,
   `email` varchar(150) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `status` varchar(30) DEFAULT 'pending',
+  `code` varchar(30) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -84,8 +84,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Elizabeth Stevenson', 'eliza@mailinator.com', '00000000', 'pending', '2025-07-19 14:01:37', '2025-07-25 09:33:28');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `code`, `created_at`, `updated_at`) VALUES
+(1, 'Elizabeth Stevenson', 'eliza@mailinator.com', '00000000', 'pending', '2025-07-19 14:01:37', '2025-07-25 09:33:28'),
+(2, 'Clinton Green', 'fcloudin@gmail.com', '08080808', NULL, '2025-07-29 21:57:34', '2025-07-29 21:58:42');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,8 @@ CREATE TABLE `users_coins` (
 
 INSERT INTO `users_coins` (`id`, `user_id`, `coin`, `aka`, `price`, `balance`, `coin_balance`, `address`, `created_at`) VALUES
 (1, '1', 'Bitcoin', 'BTC', 25000, 1200, 0.03454, '0xhjvjhdcjhsjhvxjhvsjahvkjdvkjkagvdkshvkajbkchv', '2025-07-24 08:46:56'),
-(3, '1', 'Ethereum', 'Eth', 75000, 3100, 0.0345, 'Ipsumxreprehenderit', '2025-07-25 09:37:36');
+(4, '1', 'USDC', 'USDC', NULL, NULL, 56, 'jhrkhgkjshgkjhghkjdhgjkdhgkjhskjdfhkjdh', '2025-07-28 14:17:06'),
+(5, '1', 'Ethereum', 'ETH', NULL, NULL, 0.451, 'nbegiuriusbefejblswigzzebrgjedvmb', '2025-07-29 06:02:54');
 
 -- --------------------------------------------------------
 
@@ -211,13 +213,13 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users_coins`
 --
 ALTER TABLE `users_coins`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `wallets`

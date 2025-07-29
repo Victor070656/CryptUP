@@ -79,43 +79,59 @@ if (isset($_SESSION["cryptup_user"])) {
                 </div>
                 <div class="card w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
-                        <h2 class="typography_h1 mb-2 font-black">Forgot Password</h2>
-                        <p class="typography_body">Enter your email to get started</p>
+                        <h2 class="typography_h1 mb-2 font-black">Reset Password</h2>
+                        <p class="typography_body">Enter the code and new password</p>
                     </div>
                     <form method="post" class="space-y-6">
                         <div>
-                            <label class="sr-only" for="email">Email</label>
-                            <input class="input mb-2" id="email" name="email" autofocus placeholder="Email" required=""
-                                type="email" />
+                            <label class="sr-only" for="code">Code</label>
+                            <input class="input mb-2" id="code" name="code" autofocus placeholder="Code" required=""
+                                type="text" />
+
+                        </div>
+                        <div>
+                            <label class="sr-only" for="password">New Password</label>
+                            <input class="input mb-2" id="password" name="password" autofocus placeholder="New password"
+                                required="" type="password" />
 
                         </div>
 
-                        <button class="button_primary w-full" name="login" type="submit">Send Code</button>
+                        <button class="button_primary w-full" name="login" type="submit">Reset Password</button>
                         <?php
                         if (isset($_POST["login"])) {
-                            $code = rand(100000, 999999);
-                            $email = htmlspecialchars($_POST["email"]);
-
-                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email'");
-                            if (mysqli_num_rows($checkUser) > 0) {
-                                $_SESSION["email"] = $email;
-                                // send mail here
-                                $subject = "CryptUP Password Reset Code";
-                                $message = "Your password reset code is: <b>$code</b>";
-                                if (sendMail($subject, $message, $email)) {
-                                    $_SESSION["reset_code"] = $code;
-                                    echo "<script>alert('Code sent to your email! 📧'); location.href = 'reset.php'</script>";
-                                } else {
-                                    echo "<script>alert('Something went wrong! 🚫')</script>";
-                                }
-                                
-                            } else {
-                                echo "<script>alert('User not found! 🚫')</script>";
+                            $code = mysqli_real_escape_string($conn, $_POST["code"]);
+                            $password = mysqli_real_escape_string($conn, $_POST["password"]);
+                            $email = $_SESSION["email"];
+                            $reset_code = $_SESSION["reset_code"];
+                            if ($code != $reset_code) {
+                                echo "<script>alert('Invalid code! 🚫')</script>";
+                                exit();
                             }
+                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email'");
+                            if (mysqli_num_rows($checkUser) == 0) {
+                                echo "<script>alert('User not found! 🚫')</script>";
+                                exit();
+                            }
+
+                            if ($code != $reset_code) {
+                                echo "<script>alert('Wrong code! 🚫')</script>";
+                                exit();
+                            }
+
+                            $updatePassword = mysqli_query($conn, "UPDATE `users` SET `password` = '$password' WHERE `email` = '$email'");
+                            if (!$updatePassword) {
+                                echo "<script>alert('Something went wrong! 🚫')</script>";
+                                exit();
+                            } else {
+                                echo "<script>alert('Password Updated! ✅'); location.href = 'login.php';</script>";
+                            }
+
+
+
                         }
                         ?>
                     </form>
-                    
+
 
                 </div>
             </div>
