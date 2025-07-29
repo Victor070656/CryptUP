@@ -1,5 +1,6 @@
 <?php
 include_once "config/config.php";
+include_once "config/functions.php";
 if (!isset($_SESSION["cryptup_user"])) {
     echo "<script>location.href = 'login.php'</script>";
 }
@@ -12,6 +13,8 @@ if (mysqli_num_rows($getCoins) > 0) {
         $bal += $coin["balance"];
     }
 }
+
+$coinData = getCoinMarketCapData() ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -153,7 +156,15 @@ if (mysqli_num_rows($getCoins) > 0) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($coins as $coin): ?>
+                                    <?php foreach ($coins as $coin):
+                                        $item = [];
+                                        foreach ($coinData["data"] as $data) {
+                                            if (strtoupper($data['symbol']) === strtoupper($coin["aka"])) {
+                                                $item = $data;
+                                                break;
+                                            }
+                                        }
+                                        ?>
                                         <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors">
                                             <td class="p-3">
                                                 <div class="flex items-center gap-4">
@@ -168,9 +179,9 @@ if (mysqli_num_rows($getCoins) > 0) {
                                             <td class="p-3 font-medium text-white">
                                                 <?= number_format($coin["coin_balance"], 6) ?>
                                             </td>
-                                            <td class="p-3 font-medium text-white">$<?= number_format($coin["price"]) ?></td>
+                                            <td class="p-3 font-medium text-white">$<?= number_format($item["quote"]["USD"]["price"]) ?? 0 ?></td>
                                             <td class="p-3 text-right font-semibold text-white">
-                                                $<?= number_format($coin["balance"]) ?></td>
+                                                $<?= number_format($item["quote"]["USD"]["price"] * $coin["coin_balance"]) ?? 0 ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

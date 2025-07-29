@@ -90,7 +90,7 @@ if (!isset($_SESSION["cryptup_user"])) {
                     <div class="mt-6 flex justify-center">
                         <button class="button_primary h-12 w-full max-w-xs text-base font-bold tracking-wider"
                             name="save" type="submit">
-                            <span>Recover Wallet</span>
+                            <span>Backup Wallet</span>
                         </button>
                     </div>
                     <?php

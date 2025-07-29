@@ -10,7 +10,7 @@ if (isset($_SESSION["cryptup_user"])) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>CryptUP || Login</title>
+    <title>CryptUP || Forgotten Password</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
@@ -78,43 +78,35 @@ if (isset($_SESSION["cryptup_user"])) {
                 </div>
                 <div class="card w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
-                        <h2 class="typography_h1 mb-2 font-black">Welcome Back</h2>
-                        <p class="typography_body">Securely log in to your wallet.</p>
+                        <h2 class="typography_h1 mb-2 font-black">Forgot Password</h2>
+                        <p class="typography_body">Enter your email to get started</p>
                     </div>
                     <form method="post" class="space-y-6">
                         <div>
                             <label class="sr-only" for="email">Email</label>
                             <input class="input mb-2" id="email" name="email" autofocus placeholder="Email" required=""
                                 type="email" />
-                            <a class="text-sm align-end text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
-                                href="forgot.php">Forgot Password</a>
+
                         </div>
-                        <div>
-                            <label class="sr-only" for="password">Password</label>
-                            <input class="input" id="password" name="password" placeholder="Password" required=""
-                                type="password" />
-                        </div>
-                        <button class="button_primary w-full" name="login" type="submit">Log In</button>
+
+                        <button class="button_primary w-full" name="login" type="submit">Send Code</button>
                         <?php
                         if (isset($_POST["login"])) {
+                            $code = rand(100000, 999999);
                             $email = htmlspecialchars($_POST["email"]);
-                            $password = htmlspecialchars($_POST["password"]);
 
-                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email' AND `password` = '$password'");
+                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email'");
                             if (mysqli_num_rows($checkUser) > 0) {
-                                $user = mysqli_fetch_assoc($checkUser);
-                                $_SESSION["cryptup_user"] = $user["id"];
+                                $_SESSION["email"] = $email;
+                                // send mail here
                                 echo "<script>alert('Login Successful! ✔️'); location.href = 'dashboard.php'</script>";
                             } else {
-                                echo "<script>alert('Login Failed! wrong credentials 🚫'); location.href = 'login.php'</script>";
+                                echo "<script>alert('Something went wrong! 🚫')</script>";
                             }
                         }
                         ?>
                     </form>
-                    <div class="text-center mt-4">
-                        <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
-                            href="register.php">Register</a>
-                    </div>
+                    
 
                 </div>
             </div>

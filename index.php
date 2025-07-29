@@ -195,7 +195,7 @@
                     Start your secure backup journey today.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button
+                    <button onclick="location.href='signup.php'"
                         class="btn-primary text-lg md:text-xl px-8 md:px-12 py-4 md:py-5 flex items-center space-x-3">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -203,7 +203,7 @@
                         </svg>
                         <span>Get Started Free</span>
                     </button>
-                    <button
+                    <!-- <button
                         class="btn-secondary text-lg md:text-xl px-8 md:px-12 py-4 md:py-5 flex items-center space-x-3">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -211,7 +211,7 @@
                             </path>
                         </svg>
                         <span>Talk to Expert</span>
-                    </button>
+                    </button> -->
                 </div>
                 <div class="mt-8 text-gray-500 text-xs md:text-sm">
                     ✓ No credit card required ✓ 30-day money-back guarantee ✓ Enterprise support available

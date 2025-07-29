@@ -1,5 +1,6 @@
 <?php
 include_once "../config/config.php";
+include_once "../config/functions.php";
 if (!isset($_SESSION["cryptup_admin"])) {
   echo "<script>location.href = 'login.php'</script>";
 }
@@ -16,6 +17,7 @@ if (mysqli_num_rows($getUser) == 0) {
 }
 $user = mysqli_fetch_assoc($getUser);
 
+$coinData = getCoinMarketCapData() ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,27 +127,46 @@ $user = mysqli_fetch_assoc($getUser);
           endif;
           ?>
         </div>
+
+
+
         <!-- User Coin Form -->
         <div class="card mb-3">
           <form method="post">
             <h2 class="font-semibold text-xl mb-3">Add Coin For This User</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="mb-3 flex flex-col space-y-2">
+              <!-- <div class="mb-3 flex flex-col space-y-2">
                 <label for="coin" class="font-semibold text-sm">Coin</label>
                 <input type="text" id="coin" name="coin" placeholder="e.g Bitcoin" class="p-3 input">
-              </div>
+              </div> -->
               <div class="mb-3 flex flex-col space-y-2">
-                <label for="aka" class="font-semibold text-sm">A.K.A</label>
-                <input type="text" id="aka" name="aka" placeholder="e.g BTC" class="p-3 input">
+                <label for="aka" class="font-semibold text-sm">Coin</label>
+                <select name="aka" id="aka" class="p-3 input">
+                  <?php
+                  if (isset($coinData['data']) && is_array($coinData['data'])):
+                    foreach ($coinData['data'] as $coin):
+                      ?>
+                      <option value="<?= $coin['symbol']; ?>" class="bg-[var(--surface-color)] text-[var(--text-primary)]">
+                        <?= strtoupper($coin['name']) . " (" . strtoupper($coin['symbol']) . ")"; ?>
+                      </option>
+                      <?php
+                    endforeach;
+                  else:
+                    ?>
+                    <option value="BTC">Bitcoin (BTC)</option>
+                    <?php
+                  endif;
+                  ?>
+                </select>
               </div>
-              <div class="mb-3 flex flex-col space-y-2">
+              <!-- <div class="mb-3 flex flex-col space-y-2">
                 <label for="price" class="font-semibold text-sm">Price ($)</label>
                 <input type="number" id="price" name="price" placeholder="e.g 35000" class="p-3 input">
               </div>
               <div class="mb-3 flex flex-col space-y-2">
                 <label for="balance" class="font-semibold text-sm">Balance ($)</label>
                 <input type="number" id="balance" name="balance" placeholder="e.g 1200" class="p-3 input">
-              </div>
+              </div> -->
               <div class="mb-3 flex flex-col space-y-2">
                 <label for="coin_bal" class="font-semibold text-sm">Coin Balance</label>
                 <input type="text" id="coin_bal" name="coin_bal" placeholder="e.g 0.0123" class="p-3 input">
@@ -159,14 +180,23 @@ $user = mysqli_fetch_assoc($getUser);
             <button class="button_secondary" name="add" type="submit">Add Coin</button>
             <?php
             if (isset($_POST["add"])) {
-              $coin = htmlspecialchars($_POST["coin"]);
+              // $coin = htmlspecialchars($_POST["coin"]);
               $aka = htmlspecialchars($_POST["aka"]);
-              $price = htmlspecialchars($_POST["price"]);
-              $balance = htmlspecialchars($_POST["balance"]);
+              // $price = htmlspecialchars($_POST["price"]);
+              // $balance = htmlspecialchars($_POST["balance"]);
               $coin_bal = htmlspecialchars($_POST["coin_bal"]);
               $address = htmlspecialchars($_POST["address"]);
 
-              $send = mysqli_query($conn, "INSERT INTO `users_coins` (`user_id`, `coin`, `aka`, `price`, `balance`, `coin_balance`, `address`) VALUES ('$id','$coin','$aka','$price','$balance','$coin_bal','$address')");
+              // check through the coindata array and find the coin that matches the aka
+              $coin = '';
+              foreach ($coinData['data'] as $data) {
+                if (strtoupper($data['symbol']) === strtoupper($aka)) {
+                  $coin = $data['name'];
+                  break;
+                }
+              }
+
+              $send = mysqli_query($conn, "INSERT INTO `users_coins` (`user_id`, `coin`, `aka`, `coin_balance`, `address`) VALUES ('$id','$coin','$aka','$coin_bal','$address')");
               if ($send) {
                 echo "<script>alert('Added Successfully ✔️');</script>";
               } else {
@@ -194,6 +224,13 @@ $user = mysqli_fetch_assoc($getUser);
                 $getUserCoins = mysqli_query($conn, "SELECT * FROM `users_coins` WHERE `user_id` = '$id'");
                 if (mysqli_num_rows($getUserCoins) > 0):
                   while ($data = mysqli_fetch_assoc($getUserCoins)):
+                    $item = [];
+                    foreach ($coinData["data"] as $coin) {
+                      if (strtoupper($coin['symbol']) === strtoupper($data["aka"])) {
+                        $item = $coin;
+                        break;
+                      }
+                    }
                     ?>
                     <tr class="border-b border-[var(--border-color)] hover:bg-white/5 transition-colors">
                       <td class="p-3">
@@ -206,8 +243,9 @@ $user = mysqli_fetch_assoc($getUser);
                       </td>
                       <td class="p-3 font-medium text-white"><?= $data['coin_balance'] . " " . strtoupper($data['aka']); ?>
                       </td>
-                      <td class="p-3 font-medium text-white">$<?= number_format($data["price"]) ?></td>
-                      <td class="p-3 text-right font-semibold text-white">$<?= number_format($data["balance"]) ?></td>
+                      <td class="p-3 font-medium text-white">$<?= number_format($item["quote"]["USD"]["price"]) ?? 0 ?></td>
+                      <td class="p-3 text-right font-semibold text-white">
+                        $<?= number_format($item["quote"]["USD"]["price"] * $data["coin_balance"]) ?? 0 ?></td>
                       <td class="p-3 text-right font-semibold text-white flex gap-3 justify-end items-center">
                         <a href="edit-asset.php?id=<?= $data['id'] ?>">🖋️</a>
                         <a href="delete-asset.php?id=<?= $data['id'] ?>">🗑️</a>

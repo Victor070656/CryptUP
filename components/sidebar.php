@@ -44,6 +44,11 @@
             <span class="text-lg">⚙️</span>
             Settings
         </a>
+        <a class="flex items-center gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg hover:bg-white/10 text-[var(--text-secondary)] hover:text-white transition-colors text-sm sm:text-base <?= basename($_SERVER['REQUEST_URI']) == 'logout.php' ? 'bg-[var(--primary-color)] text-white' : 'text-[var(--text-secondary)] hover:text-white'; ?>"
+            href="logout.php">
+            <span class="text-lg">🚫</span>
+            Logout
+        </a>
     </nav>
 </aside>
 

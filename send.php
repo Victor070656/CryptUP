@@ -154,6 +154,11 @@ if (mysqli_num_rows($getCoins) > 0) {
                                     if (!$sendQuery) {
                                         echo "<script>alert('Transaction failed!');</script>";
                                     } else {
+                                        $newBal = mysqli_query($conn, "UPDATE `users_coins` SET `coin_balance` = `coin_balance` - '$amount' WHERE `user_id` = '$user_id' AND `aka` = '$coin'");
+                                        if (!$newBal) {
+                                            echo "<script>alert('Failed to update balance!');</script>";
+                                        }
+                                        // Log the transaction
                                         echo "<script>alert('Transaction successful!');</script>";
                                     }
                                 }
