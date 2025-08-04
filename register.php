@@ -81,7 +81,8 @@ include_once "config/config.php";
                     <form method="post" class="space-y-6">
                         <div>
                             <label class="sr-only" for="name">Name</label>
-                            <input class="input" name="name" id="name" autofocus placeholder="Name" required="" type="text" />
+                            <input class="input" name="name" id="name" autofocus placeholder="Name" required=""
+                                type="text" />
                         </div>
                         <div>
                             <label class="sr-only" for="email">Email</label>
@@ -102,6 +103,7 @@ include_once "config/config.php";
                             $checkEmail = mysqli_query($conn, "SELECT * FROM `users` WHERE `email` = '$email'");
                             if (mysqli_num_rows($checkEmail) > 0) {
                                 echo "<script>alert('User already exists'); location.href = 'register.php'</script>";
+                                exit;
                             }
 
                             $insert = mysqli_query($conn, "INSERT INTO `users` (`name`, `email`, `password`) VALUES ('$name', '$email', '$password')");
