@@ -120,28 +120,43 @@ if (mysqli_num_rows($getCoins) > 0) {
                     <!-- Mobile Cards View -->
                     <div class="block md:hidden space-y-4">
                         <?php if (isset($coins) && is_array($coins)): ?>
-                            <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer"
-                                onclick="viewAssetDetails('BTC')">
-                                <div class="flex items-center justify-between mb-3">
-                                    <div class="flex items-center gap-3">
-                                        <!-- <div
+                            <?php foreach ($coins as $coin):
+                                $item = [];
+                                foreach ($coinData["data"] as $data) {
+                                    if (strtoupper($data['symbol']) === strtoupper($coin["aka"])) {
+                                        $item = $data;
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="flex items-center gap-3">
+                                            <!-- <div
                                         class="w-10 h-10 rounded-full bg-gradient-to-r from-orange-400 to-yellow-500 flex items-center justify-center">
                                         <span class="text-white font-bold">₿</span>
                                     </div> -->
-                                        <div>
-                                            <p class="font-semibold text-white">Bitcoin</p>
-                                            <p class="text-sm text-[var(--text-secondary)]">BTC</p>
+                                            <div>
+                                                <p class="font-semibold text-white"><?= strtoupper($coin["coin"]) ?></p>
+                                                <p class="text-sm text-[var(--text-secondary)]"><?= strtoupper($coin["aka"]) ?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-semibold text-white">
+                                                $<?= number_format($item["quote"]["USD"]["price"] * $coin["coin_balance"]) ?? 0 ?>
+                                            </p>
                                         </div>
                                     </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-white">$3,086.25</p>
+                                    <div class="flex justify-between text-sm">
+                                        <span class="text-[var(--text-secondary)]">Balance:
+                                            <?= number_format($coin["coin_balance"], 6) ?>
+                                            <?= strtoupper($coin["aka"]) ?></span>
+                                        <span
+                                            class="text-[var(--text-secondary)]">$<?= number_format($item["quote"]["USD"]["price"]) ?? 0 ?></span>
                                     </div>
                                 </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-[var(--text-secondary)]">Balance: 0.12345 BTC</span>
-                                    <span class="text-[var(--text-secondary)]">$25,000.00</span>
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
                         <?php else: ?>
                             <div class="bg-black/20 rounded-lg p-4 hover:bg-black/30 transition-colors cursor-pointer">
                                 <h4 class="text-xl font-semibold text-center">Coins Not Synced yet</h4>

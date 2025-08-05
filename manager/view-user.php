@@ -129,7 +129,11 @@ $coinData = getCoinMarketCapData() ?? [];
         </div>
 
 
-
+        <?php 
+        // echo "<pre>";
+        // var_dump($coinData); 
+        // echo "</pre>";
+        ?>
         <!-- User Coin Form -->
         <div class="card mb-3">
           <form method="post">
