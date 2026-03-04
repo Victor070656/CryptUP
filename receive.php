@@ -75,6 +75,7 @@ if (mysqli_num_rows($getCoins) > 0) {
       }
     }
   </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">

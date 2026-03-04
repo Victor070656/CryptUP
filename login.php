@@ -59,6 +59,7 @@ if (isset($_SESSION["cryptup_user"])) {
             @apply text-base text-[var(--text-secondary)];
         }
     </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-background-color text-text-primary">
@@ -79,9 +80,23 @@ if (isset($_SESSION["cryptup_user"])) {
                 <div class="card w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
                         <h2 class="typography_h1 mb-2 font-black">Welcome Back</h2>
-                        <p class="typography_body">Securely log in to your wallet.</p>
+                        <p class="typography_body">Choose your login method.</p>
                     </div>
-                    <form method="post" class="space-y-6">
+
+                    <!-- Login Option Tabs -->
+                    <div class="flex mb-6 bg-[var(--gray-800)] rounded-full p-1">
+                        <button type="button" id="tab-regular-login" onclick="switchLoginTab('regular')"
+                            class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black">
+                            Regular
+                        </button>
+                        <button type="button" id="tab-decentralized-login" onclick="switchLoginTab('decentralized')"
+                            class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]">
+                            Decentralized
+                        </button>
+                    </div>
+
+                    <!-- Regular Login Form -->
+                    <form method="post" id="form-regular-login" class="space-y-6">
                         <div>
                             <label class="sr-only" for="email">Email</label>
                             <input class="input mb-2" id="email" name="email" autofocus placeholder="Email" required=""
@@ -111,12 +126,69 @@ if (isset($_SESSION["cryptup_user"])) {
                         }
                         ?>
                     </form>
+
+                    <!-- Decentralized Login Form -->
+                    <form method="post" id="form-decentralized-login" class="space-y-6" style="display: none;">
+                        <div>
+                            <label class="sr-only" for="dec_login_code">Decentralized Code</label>
+                            <input class="input" id="dec_login_code" name="dec_login_code"
+                                placeholder="Decentralized Code" required="" type="text" />
+                        </div>
+                        <div>
+                            <label class="sr-only" for="dec_login_password">Password</label>
+                            <input class="input" id="dec_login_password" name="dec_login_password"
+                                placeholder="Password" required="" type="password" />
+                        </div>
+                        <button class="button_primary w-full" name="login_decentralized" type="submit">Log In</button>
+                        <?php
+                        if (isset($_POST["login_decentralized"])) {
+                            $unique_code = htmlspecialchars($_POST["dec_login_code"]);
+                            $password = htmlspecialchars($_POST["dec_login_password"]);
+
+                            $checkUser = mysqli_query($conn, "SELECT * FROM `users` WHERE `unique_code` = '$unique_code' AND `password` = '$password'");
+                            if (mysqli_num_rows($checkUser) > 0) {
+                                $user = mysqli_fetch_assoc($checkUser);
+                                $_SESSION["cryptup_user"] = $user["id"];
+                                echo "<script>alert('Login Successful! ✔️'); location.href = 'dashboard.php'</script>";
+                            } else {
+                                echo "<script>alert('Login Failed! wrong credentials 🚫'); location.href = 'login.php'</script>";
+                            }
+                        }
+                        ?>
+                    </form>
+
                     <div class="text-center mt-4">
                         <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
                             href="register.php">Register</a>
                     </div>
 
                 </div>
+
+                <script>
+                    function switchLoginTab(tab) {
+                        const regularForm = document.getElementById('form-regular-login');
+                        const decentralizedForm = document.getElementById('form-decentralized-login');
+                        const tabRegular = document.getElementById('tab-regular-login');
+                        const tabDecentralized = document.getElementById('tab-decentralized-login');
+
+                        if (tab === 'regular') {
+                            regularForm.style.display = '';
+                            decentralizedForm.style.display = 'none';
+                            tabRegular.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black';
+                            tabDecentralized.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]';
+                        } else {
+                            regularForm.style.display = 'none';
+                            decentralizedForm.style.display = '';
+                            tabDecentralized.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black';
+                            tabRegular.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]';
+                        }
+                    }
+
+                    // Keep decentralized tab active after form submission attempt
+                    <?php if (isset($_POST["login_decentralized"])): ?>
+                        switchLoginTab('decentralized');
+                    <?php endif; ?>
+                </script>
             </div>
         </main>
     </div>

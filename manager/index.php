@@ -53,6 +53,7 @@ $getUsers = mysqli_query($conn, "SELECT * FROM `users` ");
       }
     }
   </style>
+    <?php include "../components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">

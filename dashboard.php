@@ -70,6 +70,7 @@ if (mysqli_num_rows($getCoins) > 0) {
       }
     }
   </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">
@@ -111,7 +112,49 @@ if (mysqli_num_rows($getCoins) > 0) {
                     </div>
                 </div>
 
+                <!-- Decentralized Code Card -->
+                <div class="card mb-6 sm:mb-8">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg sm:text-xl font-semibold mb-1 text-[var(--text-secondary)]">Decentralized
+                                Code</h2>
+                            <?php if (!empty($userInfo['unique_code'])): ?>
+                                <div class="flex items-center gap-3">
+                                    <p class="text-xl sm:text-2xl font-bold text-white font-mono tracking-wider"
+                                        id="dec-code-display">
+                                        <?= htmlspecialchars($userInfo['unique_code']) ?>
+                                    </p>
+                                    <button type="button" onclick="copyDecCode()" title="Copy code"
+                                        class="text-[var(--text-secondary)] hover:text-white transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-[var(--text-secondary)] mt-1">Use this code to log in with the
+                                    decentralized option.</p>
+                            <?php else: ?>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">You don't have a decentralized code
+                                    yet. Generate one to enable decentralized login.</p>
+                                <a href="settings.php#decentralized-code"
+                                    class="button_primary inline-block text-sm !px-5 !py-2">Generate Code</a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
 
+                <script>
+                    function copyDecCode() {
+                        const code = document.getElementById('dec-code-display')?.innerText.trim();
+                        if (code) {
+                            navigator.clipboard.writeText(code).then(() => {
+                                alert('Decentralized code copied to clipboard!');
+                            });
+                        }
+                    }
+                </script>
 
                 <!-- Assets Table -->
                 <div class="card">
@@ -220,6 +263,81 @@ if (mysqli_num_rows($getCoins) > 0) {
         </div>
     </div>
 
+    <!-- PWA Install Prompt Banner -->
+    <div id="pwa-install-banner"
+        style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding:16px; background:linear-gradient(135deg, #1a202c 0%, #1E1E1E 100%); border-top:2px solid #53d22c; box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
+        <div style="max-width:600px; margin:0 auto; display:flex; align-items:center; gap:16px;">
+            <img src="assets/image/icon-192x192.png" alt="CryptUP" style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
+            <div style="flex:1; min-width:0;">
+                <p style="margin:0; font-weight:700; font-size:16px; color:#E0E0E0;">Install CryptUP</p>
+                <p style="margin:4px 0 0; font-size:13px; color:#A0A0A0;">Add to your home screen for quick access and an app-like experience.</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-shrink:0;">
+                <button id="pwa-install-dismiss"
+                    style="padding:8px 16px; border-radius:999px; background:#4a5568; color:#E0E0E0; font-weight:600; font-size:14px; border:none; cursor:pointer;">
+                    Later
+                </button>
+                <button id="pwa-install-btn"
+                    style="padding:8px 20px; border-radius:999px; background:#53d22c; color:#000; font-weight:700; font-size:14px; border:none; cursor:pointer;">
+                    Install
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let deferredPrompt;
+        const installBanner = document.getElementById('pwa-install-banner');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const dismissBtn = document.getElementById('pwa-install-dismiss');
+
+        // Check if user previously dismissed
+        const dismissed = localStorage.getItem('pwa-install-dismissed');
+        const dismissedAt = dismissed ? parseInt(dismissed) : 0;
+        const daysSinceDismissed = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Show banner if not dismissed recently (re-show after 3 days)
+            if (!dismissed || daysSinceDismissed > 3) {
+                setTimeout(() => {
+                    installBanner.style.display = 'block';
+                    installBanner.style.animation = 'slideUp 0.4s ease-out';
+                }, 2000);
+            }
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            installBanner.style.display = 'none';
+            if (outcome === 'accepted') {
+                localStorage.removeItem('pwa-install-dismissed');
+            }
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            installBanner.style.display = 'none';
+            localStorage.setItem('pwa-install-dismissed', Date.now().toString());
+        });
+
+        // Hide banner if app is already installed
+        window.addEventListener('appinstalled', () => {
+            installBanner.style.display = 'none';
+            deferredPrompt = null;
+        });
+    </script>
+
+    <style>
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 
 </body>
 

@@ -60,6 +60,7 @@ if (isset($_SESSION["cryptup_user"])) {
             @apply text-base text-[var(--text-secondary)];
         }
     </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-background-color text-text-primary">
@@ -108,14 +109,14 @@ if (isset($_SESSION["cryptup_user"])) {
                                 } else {
                                     echo "<script>alert('Something went wrong! 🚫')</script>";
                                 }
-                                
+
                             } else {
                                 echo "<script>alert('User not found! 🚫')</script>";
                             }
                         }
                         ?>
                     </form>
-                    
+
 
                 </div>
             </div>

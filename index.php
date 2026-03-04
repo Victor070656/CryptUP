@@ -14,6 +14,7 @@
     <!-- <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script> -->
     <script src="assets/js/tailwindcss.js"></script>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="animated-bg">

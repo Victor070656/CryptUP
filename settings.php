@@ -58,6 +58,7 @@ if (!isset($_SESSION["cryptup_user"])) {
       }
     }
   </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">
@@ -82,16 +83,16 @@ if (!isset($_SESSION["cryptup_user"])) {
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"
                                 for="name">Name</label>
                             <div class="relative">
-                                <input class="input pr-12" id="name" value="<?=$userInfo['name']?>" name="name" placeholder="Enter your name"
-                                    type="text" />
+                                <input class="input pr-12" id="name" value="<?= $userInfo['name'] ?>" name="name"
+                                    placeholder="Enter your name" type="text" />
                             </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2" for="email">Email
                                 Address</label>
                             <div class="relative">
-                                <input class="input pr-12" id="email" name="email" value="<?= $userInfo['email'] ?>" placeholder="Enter address"
-                                    type="email" />
+                                <input class="input pr-12" id="email" name="email" value="<?= $userInfo['email'] ?>"
+                                    placeholder="Enter address" type="email" />
 
                             </div>
                         </div>
@@ -101,9 +102,39 @@ if (!isset($_SESSION["cryptup_user"])) {
                                     for="password">Password</label>
                             </div>
                             <div class="relative">
-                                <input class="input" id="password" placeholder="*****" value="<?=$userInfo['password']?>" name="password" type="text" />
+                                <input class="input" id="password" placeholder="*****"
+                                    value="<?= $userInfo['password'] ?>" name="password" type="text" />
 
                             </div>
+                        </div>
+                        <div id="decentralized-code">
+                            <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2">Decentralized
+                                Code</label>
+                            <?php if (!empty($userInfo['unique_code'])): ?>
+                                <div class="flex items-center gap-2">
+                                    <input class="input pr-12 font-mono tracking-wider" type="text"
+                                        value="<?= htmlspecialchars($userInfo['unique_code']) ?>" readonly />
+                                    <button type="button"
+                                        onclick="navigator.clipboard.writeText('<?= htmlspecialchars($userInfo['unique_code']) ?>').then(() => alert('Copied!'))"
+                                        class="bg-[var(--on-surface-color)] text-[var(--text-primary)] rounded-lg px-4 py-3 hover:bg-[#383838] transition-colors whitespace-nowrap">
+                                        Copy
+                                    </button>
+                                </div>
+                                <p class="text-xs text-[var(--text-secondary)] mt-1">This is your decentralized login code.
+                                    Keep it safe.</p>
+                            <?php else: ?>
+                                <div class="flex items-center gap-2">
+                                    <input class="input pr-12 font-mono tracking-wider" id="gen_unique_code"
+                                        name="unique_code" type="text" placeholder="Click Generate to create a code"
+                                        readonly />
+                                    <button type="button" onclick="generateDecCode()"
+                                        class="bg-[var(--primary-color)] text-black rounded-lg px-4 py-3 font-bold hover:bg-[var(--accent-color)] transition-colors whitespace-nowrap">
+                                        Generate
+                                    </button>
+                                </div>
+                                <p class="text-xs text-[var(--text-secondary)] mt-1">Generate a unique decentralized code to
+                                    enable passwordless-email login.</p>
+                            <?php endif; ?>
                         </div>
                         <div>
                             <button class="button_primary" name="update" type="submit">
@@ -116,7 +147,23 @@ if (!isset($_SESSION["cryptup_user"])) {
                             $email = htmlspecialchars($_POST["email"]);
                             $password = htmlspecialchars($_POST["password"]);
 
-                            $update = mysqli_query($conn, "UPDATE `users` SET `name`='$name', `email`='$email', `password`='$password' WHERE `id`='$user_id'");
+                            $unique_code = isset($_POST['unique_code']) ? htmlspecialchars($_POST['unique_code']) : '';
+
+                            if (!empty($unique_code)) {
+                                if (strlen($unique_code) < 12) {
+                                    echo "<script>alert('Invalid decentralized code'); location.href = 'settings.php'</script>";
+                                    exit;
+                                }
+                                $checkCode = mysqli_query($conn, "SELECT * FROM `users` WHERE `unique_code` = '$unique_code' AND `id` != '$user_id'");
+                                if (mysqli_num_rows($checkCode) > 0) {
+                                    echo "<script>alert('This decentralized code is already in use. Please generate a new one.'); location.href = 'settings.php'</script>";
+                                    exit;
+                                }
+                                $update = mysqli_query($conn, "UPDATE `users` SET `name`='$name', `email`='$email', `password`='$password', `unique_code`='$unique_code' WHERE `id`='$user_id'");
+                            } else {
+                                $update = mysqli_query($conn, "UPDATE `users` SET `name`='$name', `email`='$email', `password`='$password' WHERE `id`='$user_id'");
+                            }
+
                             if ($update) {
                                 echo "<script>location.href = 'settings.php'; alert('Profile updated successfully!')</script>";
                             } else {
@@ -125,6 +172,24 @@ if (!isset($_SESSION["cryptup_user"])) {
                         }
                         ?>
                     </form>
+                    <script>
+                        function generateDecCode() {
+                            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                            const length = 16;
+                            let code = '';
+                            const array = new Uint8Array(length);
+                            crypto.getRandomValues(array);
+                            for (let i = 0; i < length; i++) {
+                                code += chars[array[i] % chars.length];
+                            }
+                            document.getElementById('gen_unique_code').value = code;
+                        }
+
+                        // Auto-scroll to decentralized section if hash present
+                        if (window.location.hash === '#decentralized-code') {
+                            document.getElementById('decentralized-code')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    </script>
                 </div>
 
                 <!-- phrase -->

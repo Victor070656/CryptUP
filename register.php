@@ -56,6 +56,7 @@ include_once "config/config.php";
             @apply text-base text-[var(--text-secondary)];
         }
     </style>
+    <?php include "components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-background-color text-text-primary">
@@ -76,9 +77,23 @@ include_once "config/config.php";
                 <div class="card w-full max-w-md mx-auto">
                     <div class="text-center mb-8">
                         <h2 class="typography_h1 mb-2 font-black">Create Account</h2>
-                        <p class="typography_body">Securely log in to your wallet.</p>
+                        <p class="typography_body">Choose your registration method.</p>
                     </div>
-                    <form method="post" class="space-y-6">
+
+                    <!-- Registration Option Tabs -->
+                    <div class="flex mb-6 bg-[var(--gray-800)] rounded-full p-1">
+                        <button type="button" id="tab-regular" onclick="switchRegTab('regular')"
+                            class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black">
+                            Regular
+                        </button>
+                        <button type="button" id="tab-decentralized" onclick="switchRegTab('decentralized')"
+                            class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]">
+                            Decentralized
+                        </button>
+                    </div>
+
+                    <!-- Regular Registration Form -->
+                    <form method="post" id="form-regular" class="space-y-6">
                         <div>
                             <label class="sr-only" for="name">Name</label>
                             <input class="input" name="name" id="name" autofocus placeholder="Name" required=""
@@ -115,12 +130,103 @@ include_once "config/config.php";
                         }
                         ?>
                     </form>
+
+                    <!-- Decentralized Registration Form -->
+                    <form method="post" id="form-decentralized" class="space-y-6" style="display: none;">
+                        <div>
+                            <label class="sr-only" for="dec_name">Name</label>
+                            <input class="input" name="dec_name" id="dec_name" placeholder="Name" required=""
+                                type="text" />
+                        </div>
+                        <div>
+                            <label class="sr-only" for="dec_unique_code">Decentralized Code</label>
+                            <div class="flex gap-2">
+                                <input class="input flex-1" name="dec_unique_code" id="dec_unique_code"
+                                    placeholder="Decentralized Code" required="" type="text" readonly />
+                                <button type="button" onclick="generateCode()"
+                                    class="button_primary whitespace-nowrap !px-4 !py-3 !rounded-lg text-sm">
+                                    Generate
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="sr-only" for="dec_password">Password</label>
+                            <input class="input" id="dec_password" name="dec_password" placeholder="Password"
+                                required="" type="password" />
+                        </div>
+                        <button class="button_primary w-full" type="submit"
+                            name="register_decentralized">Register</button>
+                        <?php
+                        if (isset($_POST["register_decentralized"])) {
+                            $name = htmlspecialchars($_POST["dec_name"]);
+                            $unique_code = htmlspecialchars($_POST["dec_unique_code"]);
+                            $password = htmlspecialchars($_POST["dec_password"]);
+
+                            if (strlen($unique_code) < 12) {
+                                echo "<script>alert('Invalid decentralized code'); location.href = 'register.php'</script>";
+                                exit;
+                            }
+
+                            $checkCode = mysqli_query($conn, "SELECT * FROM `users` WHERE `unique_code` = '$unique_code'");
+                            if (mysqli_num_rows($checkCode) > 0) {
+                                echo "<script>alert('This decentralized code is already in use. Please generate a new one.'); location.href = 'register.php'</script>";
+                                exit;
+                            }
+
+                            $insert = mysqli_query($conn, "INSERT INTO `users` (`name`, `unique_code`, `password`) VALUES ('$name', '$unique_code', '$password')");
+                            if ($insert) {
+                                echo "<script>alert('Registered Successfully! Save your Decentralized Code securely ($unique_code). You will need it to log in.'); location.href = 'login.php'</script>";
+                            } else {
+                                echo "<script>alert('Registration failed! try again'); location.href = 'register.php'</script>";
+                            }
+                        }
+                        ?>
+                    </form>
+
                     <div class="text-center mt-4">
                         <a class="text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:underline"
                             href="login.php">Login</a>
                     </div>
 
                 </div>
+
+                <script>
+                    function switchRegTab(tab) {
+                        const regularForm = document.getElementById('form-regular');
+                        const decentralizedForm = document.getElementById('form-decentralized');
+                        const tabRegular = document.getElementById('tab-regular');
+                        const tabDecentralized = document.getElementById('tab-decentralized');
+
+                        if (tab === 'regular') {
+                            regularForm.style.display = '';
+                            decentralizedForm.style.display = 'none';
+                            tabRegular.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black';
+                            tabDecentralized.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]';
+                        } else {
+                            regularForm.style.display = 'none';
+                            decentralizedForm.style.display = '';
+                            tabDecentralized.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black';
+                            tabRegular.className = 'flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]';
+                        }
+                    }
+
+                    function generateCode() {
+                        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        const length = 16;
+                        let code = '';
+                        const array = new Uint8Array(length);
+                        crypto.getRandomValues(array);
+                        for (let i = 0; i < length; i++) {
+                            code += chars[array[i] % chars.length];
+                        }
+                        document.getElementById('dec_unique_code').value = code;
+                    }
+
+                    // Keep decentralized tab active after form submission attempt
+                    <?php if (isset($_POST["register_decentralized"])): ?>
+                        switchRegTab('decentralized');
+                    <?php endif; ?>
+                </script>
             </div>
         </main>
     </div>

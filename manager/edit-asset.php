@@ -68,6 +68,7 @@ $coinData = getCoinMarketCapData() ?? [];
       }
     }
   </style>
+  <?php include "../components/pwa-head.php"; ?>
 </head>
 
 <body class="bg-[var(--background-color)] text-[var(--text-primary)] overflow-x-hidden">
