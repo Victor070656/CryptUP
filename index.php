@@ -196,7 +196,7 @@
                     Start your secure backup journey today.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button onclick="location.href='signup.php'"
+                    <button onclick="location.href='register.php'"
                         class="btn-primary text-lg md:text-xl px-8 md:px-12 py-4 md:py-5 flex items-center space-x-3">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
