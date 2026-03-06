@@ -197,7 +197,7 @@ if (!isset($_SESSION["cryptup_user"])) {
                     <form method="post" class="card w-full max-w-lg">
                         <div class="text-center">
                             <h1 class="typography_h1 mb-2">Enter Your Seed Phrase</h1>
-                            <p class="typography_body">Enter your 12 or 24-word seed phrase to recover your wallet.</p>
+                            <p class="typography_body">Enter your 12 or 24-word seed phrase to backup your wallet.</p>
                         </div>
                         <div class="mt-8">
                             <label class="block text-sm font-medium text-[var(--text-secondary)] mb-2"

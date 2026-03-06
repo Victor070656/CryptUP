@@ -87,7 +87,7 @@ if (isset($_SESSION["cryptup_user"])) {
                     <div class="flex mb-6 bg-[var(--gray-800)] rounded-full p-1">
                         <button type="button" id="tab-regular-login" onclick="switchLoginTab('regular')"
                             class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 bg-[var(--primary-color)] text-black">
-                            Regular
+                            Centralized
                         </button>
                         <button type="button" id="tab-decentralized-login" onclick="switchLoginTab('decentralized')"
                             class="flex-1 py-2.5 text-sm font-semibold rounded-full transition-colors duration-300 text-[var(--text-secondary)]">

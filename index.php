@@ -224,7 +224,7 @@
     <!-- Footer -->
     <footer class="py-16 border-t border-white/10">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Brand column -->
                 <div class="col-span-1">
                     <div class="flex items-center space-x-3 mb-6">
@@ -267,7 +267,7 @@
                 </div>
 
                 <!-- Contact -->
-                <div>
+                <!-- <div>
                     <h4 class="text-lg font-semibold mb-4 gradient-text">Contact Us</h4>
                     <ul class="space-y-2 text-gray-400">
                         <li>Email: <a href="mailto:support@cryptup.com"
@@ -276,7 +276,7 @@
                         <li>Address: <span class="hover:text-white transition">123 Crypto St, Blockchain City</span>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
 
             <div class="mt-12 border-t border-white/10 pt-6 text-center text-gray-500 text-sm">
