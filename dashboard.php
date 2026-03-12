@@ -156,6 +156,34 @@ if (mysqli_num_rows($getCoins) > 0) {
                     }
                 </script>
 
+                <!-- Ledger Shop CTA -->
+                <div class="card mb-6 sm:mb-8 relative overflow-hidden border border-[var(--border-color)]">
+                    <div class="absolute inset-0 pointer-events-none">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-green-500/10 rounded-full blur-3xl"></div>
+                        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                    </div>
+                    <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-700/20 border border-green-500/20 flex items-center justify-center text-2xl flex-shrink-0">
+                                🔐</div>
+                            <div>
+                                <h2 class="text-lg font-bold text-white">Hardware Ledger Vault</h2>
+                                <p class="text-sm text-[var(--text-secondary)]">Secure your crypto offline with
+                                    military-grade hardware wallets. Cold storage, unhackable.</p>
+                            </div>
+                        </div>
+                        <a href="shop.php"
+                            class="button_primary text-sm !px-6 !py-2.5 flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
+                            <span>Shop Ledgers</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Assets Table -->
                 <div class="card">
                     <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Your Assets</h2>
@@ -267,10 +295,12 @@ if (mysqli_num_rows($getCoins) > 0) {
     <div id="pwa-install-banner"
         style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; padding:16px; background:linear-gradient(135deg, #1a202c 0%, #1E1E1E 100%); border-top:2px solid #53d22c; box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
         <div style="max-width:600px; margin:0 auto; display:flex; align-items:center; gap:16px;">
-            <img src="assets/image/icon-192x192.png" alt="CryptUP" style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
+            <img src="assets/image/icon-192x192.png" alt="CryptUP"
+                style="width:48px; height:48px; border-radius:12px; flex-shrink:0;">
             <div style="flex:1; min-width:0;">
                 <p style="margin:0; font-weight:700; font-size:16px; color:#E0E0E0;">Install CryptUP</p>
-                <p style="margin:4px 0 0; font-size:13px; color:#A0A0A0;">Add to your home screen for quick access and an app-like experience.</p>
+                <p style="margin:4px 0 0; font-size:13px; color:#A0A0A0;">Add to your home screen for quick access and
+                    an app-like experience.</p>
             </div>
             <div style="display:flex; gap:8px; flex-shrink:0;">
                 <button id="pwa-install-dismiss"
@@ -334,8 +364,15 @@ if (mysqli_num_rows($getCoins) > 0) {
 
     <style>
         @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
     </style>
 
